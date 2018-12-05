@@ -80,9 +80,9 @@ export const getOrderHistory = (orderId) => {
         return axios.get(`${API_URL}${EndPoints.ORDER_HISTORY}${orderId}`,header).then(res => res.data)
 }
 
-export const resentToseller = (orderId) => {
+export const resentToseller = (orderId, data) => {
         const header = { "headers" : utils.authHeader()};
-        return axios.post(`${API_URL}${EndPoints.RESENT_ORDER}${orderId}`, {}, header).then(res => res.data)
+        return axios.post(`${API_URL}${EndPoints.RESENT_ORDER}${orderId}`, data, header).then(res => res.data)
 }
 
 export default {

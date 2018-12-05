@@ -71,7 +71,7 @@
           </b-row>
           </div>
             <div slot="footer" style="text-align:center" v-if="Object.keys(seller).length">
-              <b-button type="button" size="md" @click="placeOrder()" variant="primary"><i class="fa fa-dot-circle-o"></i> Place Order</b-button>
+              <b-button type="button" size="md" @click="placeOrder()" variant="primary"><i class="fa fa-dot-circle-o"></i> Update Order</b-button>
             </div>
         </b-card>
       </b-col>

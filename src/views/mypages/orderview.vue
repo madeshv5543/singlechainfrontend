@@ -234,20 +234,20 @@
           <b-col lg="12">
             <c-table :table-data="items" :fields="fields" caption="<i class='fa fa-align-justify'></i> Purchase Orders"></c-table>
           </b-col>
-          <b-row v-if="!isBuyer() && order.status !== 'Completed' ">
+          <b-row v-if="!isBuyer() && order.status !== 'Completed' && order.status !== 'Return' ">
             <b-col md="12">
             <b-form-group label="Remarks" label-for="remark" :label-cols="5" :horizontal="true">
               <b-form-input id="remark" name="remark" v-model="remark" type="text" placeholder="Remarks"></b-form-input>
             </b-form-group> 
             </b-col>
           </b-row>
-          <!-- <b-row v-if="isBuyer() && order.status !== 'Pending' ">
+          <b-row v-if="isBuyer() && order.status === 'Return' ">
             <b-col md="12">
             <b-form-group label="Remarks" label-for="remark" :label-cols="5" :horizontal="true">
               <b-form-input id="remark" name="remark" v-model="remark" type="text" placeholder="Remarks"></b-form-input>
             </b-form-group> 
             </b-col>
-          </b-row> -->
+          </b-row>
 
           <div v-if="isBuyer() && order.status === 'Pending'" slot="footer" style="text-align:center">
             <b-button type="button" @click="sentToSeller()" size="md" variant="primary"><i class="fa fa-dot-circle-o"></i>
@@ -257,7 +257,7 @@
             <b-button type="button" @click="resentToSeller()" size="md" variant="primary"><i class="fa fa-dot-circle-o"></i>
               Send To Seller</b-button>
           </div>
-          <div v-if="!isBuyer() && order.status !== 'Completed' " slot="footer" style="text-align:center">
+          <div v-if="!isBuyer() && order.status !== 'Completed'  && order.status !== 'Return' " slot="footer" style="text-align:center">
             <b-button type="button" @click="sellerConfirm('Approve')" size="md" variant="primary"><i class="fa fa-dot-circle-o"></i>
               Approve</b-button>
                  <b-button type="button" @click="sellerConfirm('Reject')" size="md" variant="primary"><i class="fa fa-dot-circle-o"></i>
@@ -375,7 +375,10 @@
         self.loading = true;
         self.showerr = false;
         self.succesmsg = false;
-        userService.resentToseller(self.orderId)
+        let data = {
+         remark: self.remark
+        }
+        userService.resentToseller(self.orderId, data)
           .then(
             res => {
               self.scrollToTop()
