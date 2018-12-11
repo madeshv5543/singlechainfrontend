@@ -1,4 +1,6 @@
 export default {
+  name: 'v-tree',
+ 
 items:[
   {
     name: 'Dashboard',
@@ -8,6 +10,11 @@ items:[
     //   variant: 'primary',
     //   text: 'NEW'
     // }
+  },
+  {
+    name: 'Product',
+    url: '/productOrder',
+    icon: 'icon-speedometer',
   },
   {
     name: 'Purchase Order',
@@ -23,7 +30,13 @@ items:[
     name: 'New Loc',
     url: '/newLoc',
     icon: 'icon-speedometer'
-  }
+  },
+  {
+    name: 'list',
+    url: '/list',
+    icon: 'icon-speedometer',
+  },
+ 
 ],
 seller:[
   {
@@ -39,6 +52,7 @@ seller:[
     name: 'Purchase Order',
     url: '/purchaseOrders',
     icon: 'icon-speedometer',
-  }
+  },
+ 
 ]
 }

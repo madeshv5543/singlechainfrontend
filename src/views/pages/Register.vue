@@ -37,7 +37,7 @@
                   <b-input-group-prepend>
                     <b-input-group-text><i class="icon-lock"></i></b-input-group-text>
                   </b-input-group-prepend>
-                  <b-form-input type="password" name="password" :state="!errors.has('password')" v-validate="'required'" class="form-control" v-model="newUser.password" placeholder="Password"
+                  <b-form-input type="password" ref="password" name="password" :state="!errors.has('password')" v-validate="'required'" class="form-control" v-model="newUser.password" placeholder="Password"
                      />
                 <b-form-invalid-feedback>
                   {{errors.first('password')}}

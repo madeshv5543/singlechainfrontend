@@ -60,8 +60,14 @@ const Users = () => import('@/views/users/Users')
 const User = () => import('@/views/users/User')
 
 const PurchasOrder = () => import('@/views/mypages/purchaseOrder')
+const ProductOrder = () => import('@/views/mypages/ProductOrder')
+const list = () => import('@/views/mypages/list')
+
+
+
 const newOrder = () => import('@/views/mypages/createOrder')
 const profile = () => import('@/views/mypages/profile')
+const editlist = () => import('@/views/mypages/editlist')
 const editOrder = () => import('@/views/mypages/editOrder')
 const viewOrder = () => import('@/views/mypages/orderview')
 const newLoc = () => import('@/views/mypages/createLoc')
@@ -89,6 +95,25 @@ const router = new Router({
           name: 'PurchaseOrder',
           component: PurchasOrder
         },
+        
+        {
+          path: '/productOrder',
+          name: 'ProductOrder',
+          component: ProductOrder
+        },
+        {
+          path: '/list',
+          name: 'list',
+          component: list
+        },
+        {
+          path: '/editlist/:id',
+          component: editlist
+        },
+        {
+          path: '/deletelist/:id',
+          component: list
+        },
         {
           path: '/newOrder',
           name: 'NewOrder',
@@ -114,6 +139,7 @@ const router = new Router({
           name: 'ViewOrder',
           component: viewOrder
         },
+       
         {
           path: 'theme',
           redirect: '/theme/colors',
