@@ -1,13 +1,13 @@
 <template>
-  <div class="animated fadeIn">
+    <div class="animated fadeIn">
     <vue-element-loading :active="loading" spinner="bar-fade-scale" color="#5dc596" :is-full-screen="true" />
     <b-row>
       <b-col md="12">
         <b-card>
           <div slot="header">
-            <strong>New Letter Of Credit</strong>
+            <strong>Edit Loc</strong>
           </div>
-          <b-alert v-if="sucmsg" variant="success" show>Request For New LC Created Successfully.</b-alert>
+          <b-alert v-if="sucmsg" variant="success" show>Loc Details updated Successfully.</b-alert>
           <b-alert v-if="showErr" variant="danger" show>{{errmsg}}</b-alert>
           <b-form>
             <b-row>
@@ -136,191 +136,201 @@
               </div>
             </div>
           </b-form>
-
           <div slot="footer" style="text-align:center" v-if="Object.keys(lcform).length">
-            <b-button type="button" size="md" @click="placeOrder()" variant="primary"><i class="fa fa-dot-circle-o"></i>
-              Request LC</b-button>
+            <b-button type="button" size="md" @click="updateLoc()" variant="primary"><i class="fa fa-dot-circle-o"></i>
+              Update LOC</b-button>
           </div>
         </b-card>
       </b-col>
     </b-row>
-  </div>
+    </div>
 </template>
-
 <script>
-  import cTable from '../base/Table.vue'
-  import userService from '@/services/userService.js'
-  export default {
-    name: 'letterofcredit',
+import cTable from '../base/Table.vue'
+import userService from '@/services/userService.js'
+export default {
+    name:'editLoc',
     components: {
-      cTable
+        cTable
     },
-    data() {
-      return {
-        lcform: {},
-        selected: [],
-        item: {}, // Must be an array reference!
-        show: true,
-        accNo: '',
-        items: [],
-        itemsArray: [],
-        sellerListArray: [],
-        bankerListArray: [],
-        orderArray: [],
-        sucmsg: false,
-        sugmssg: '',
-        errmsg: '',
-        showErr: false,
-        loading: false,
-        order: {},
-        banker: {},
-        fields: [{
-            key: 'product',
-            label: 'Product',
-            sortable: true
-          },
-          {
-            key: 'unitprice',
-            labe: 'Unit Price'
-          },
-          {
-            key: 'quantity',
-            label: 'Quantity'
-          },
-          {
-            key: 'total',
-            label: 'Total'
-          }
-        ]
-      }
+    data : () => {
+        return {
+            lcform:{},
+            locId:null,
+            locDetails:{},
+            orderArray: [],
+            bankerListArray : [],
+            order:{},
+            banker: {},
+            loading: false,
+            sucmsg: false
+        }
     },
     methods: {
-      click() {
-        // do nothing
-      },
-      scrollToTop() {
-        window.scrollTo(0, 0);
-      },
-      ResetForm() {
-        let self = this;
-        self.item = {}
-      },
-      placeOrder() {
-        let self = this;
-        let data = {
-          order : self.order._id,
-          banker : self.banker._id,
-          seller : self.order.seller._id,
-          buyer : self.order.buyer._id,
-          ...self.lcform
+        updateLoc() {
+            let self = this;
+            let data = {
+            order : self.order._id,
+            banker : self.banker._id,
+            seller : self.order.seller._id,
+            buyer : self.order.buyer._id,
+            ...self.lcform
+            }
+            self.sucmsg = false;
+            self.errmsg = null;
+            self.showErr = false;
+            self.loading = true;
+            userService.updateLoc(self.locId,data)
+            .then(
+                res => {
+                self.scrollToTop()
+                self.loading = false
+                if (res.status === 200) {
+                    self.sucmsg = true
+                } else {
+                    self.showErr = true;
+                    self.errmsg = res.message;
+                }
+                },
+                err => {
+                    self.scrollToTop()
+                    self.loading = false
+                    if (err.message) {
+                        self.showErr = true;
+                        self.errmsg = err.message;
+                    } else {
+                        self.showErr = true;
+                        self.errmsg = 'Something Went wrong. Please try after sometime.';
+                    }
+                }
+            )
+        },
+        getLocDetails () {
+            let self = this;
+            self.locId = self.$route.params.id
+            self.sucmsg = false;
+            self.errmsg = null;
+            self.showErr = false;
+            userService.getLocDetails(self.locId)
+            .then(
+                res => {
+                    self.scrollToTop()
+                    if(res.status === 200) {
+                        self.locDetails = res.data
+                        self.setLocDetails()
+                    }else{
+                        self.showErr = true;
+                        self.errmsg = res.message;
+                    }
+                },
+                err => {
+                    this.errhandler(err)
+                }
+            )
+        },
+        getfullDetails(sarray, item) {
+           return sarray.find((n) => {
+                return n._id === item
+            })
+        },
+        setLocDetails() {
+            let self = this;
+            if(Object.keys(self.locDetails).length) {
+                const { order, banker, accNo, goodsValue, shipmentDate, expiryDate, portOfDestination, portOfDeparture, seller, buyer} = self.locDetails;
+               self.banker = self.getfullDetails(self.bankerListArray, banker._id);
+               self.order =self.getfullDetails(self.orderArray, order);
+               self.lcform ={
+                   accNo,
+                   shipmentDate,
+                   expiryDate,
+                   portOfDestination,
+                   portOfDeparture,
+                   goodsValue
+               }
+            }
+        },
+        scrollToTop() {
+            window.scrollTo(0,0);
+        },
+        errhandler : err => {
+            let self = this;
+            self.loading = false
+            self.scrollToTop()
+            if (err.message) {
+              self.showErr = true;
+              self.errmsg = err.message;
+            } else {
+              self.showErr = true;
+              self.errmsg = 'Something Went wrong. Please try after sometime.';
+            }
+        },
+        getBankers() {
+            let self = this;
+            userService.getBankerlist()
+            .then(
+                res => {
+                if (res.status == 200) {
+                    this.bankerListArray = res.data
+                }
+                },
+                err => {
+                    this.bankerListArray = []
+                }
+            )
+        },
+        getOrders() {
+            let self = this;
+            userService.getCompletedOrderlist()
+            .then(
+                res => {
+                console.log("success", res)
+                if (res.status == 200) {
+                    this.orderArray = res.data
+                }
+                },
+                err => {
+                this.orderArray = []
+                }
+            )
         }
-        self.sucmsg = false;
-        self.errmsg = null;
-        self.showErr = false;
-        self.loading = true;
-        userService.placeLoc(data)
-          .then(
-            res => {
-              self.scrollToTop()
-              self.loading = false
-              if (res.status === 200) {
-                self.sucmsg = true
-              } else {
-                self.showErr = true;
-                self.errmsg = res.message;
-              }
-            },
-            err => {
-              self.scrollToTop()
-              self.loading = false
-              if (err.message) {
-                self.showErr = true;
-                self.errmsg = err.message;
-              } else {
-                self.showErr = true;
-                self.errmsg = 'Something Went wrong. Please try after sometime.';
-              }
-            }
-          )
-      },
-      getBankerList() {
-        let self = this;
-        userService.getBankerlist()
-          .then(
-            res => {
-              if (res.status == 200) {
-                this.bankerListArray = res.data
-              }
-            },
-            err => {
-              console.log("err", err)
-            }
-          )
-      },
-      getOrderList() {
-        let self = this;
-        userService.getCompletedOrderlist()
-          .then(
-            res => {
-              console.log("success", res)
-              if (res.status == 200) {
-                this.orderArray = res.data
-              }
-            },
-            err => {
-              console.log("err", err)
-            }
-          )
-      }
     },
     computed: {
-      sellerDetails: function () {
-        if (this.order.seller) {
-          return this.order.seller
-        } else {
-          return {}
-        }
-      },
-      orderlist: function () {
-        console.log("order", this.orderArray)
-        let sellerlist = this.orderArray.map(n => {
-          let obj = {
-            text: `${n.orderId}`,
-            value: n
-          }
-          return obj;
-        });
-        return sellerlist;
-      },
-      bankers: function () {
-        console.log("this bamk", this.bankerListArray)
-        let sellerlist = this.bankerListArray.map(n => {
-          let obj = {
-            text: `${n.username} - ${n.email}`,
-            value: n
-          }
-          return obj;
-        });
-        return sellerlist;
-      },
+        sellerDetails: function () {
+            if (this.order.seller) {
+            return this.order.seller
+            } else {
+            return {}
+            }
+        },
+        orderlist: function () {
+            let list = this.orderArray.map(n => {
+            let obj = {
+                text: `${n.orderId}`,
+                value: n
+            }
+            return obj;
+            });
+            return list;
+       },
+        bankers: function () {
+            let list = this.bankerListArray.map(n => {
+            let obj = {
+                text: `${n.username} - ${n.email}`,
+                value: n
+            }
+            return obj;
+            });
+            return list;
+        },
     },
-    created: function () {
-      this.getOrderList();
-      this.getBankerList()
+    created: function initFunction() {
+        this.getOrders()
+        this.getBankers()
+        this.getLocDetails()
     }
-  }
-
+}
 </script>
-
-<style scoped>
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: opacity 0.5s;
-  }
-
-  .fade-enter,
-  .fade-leave-to {
-    opacity: 0;
-  }
+<style>
 
 </style>
+

@@ -37,7 +37,7 @@
                       </div>
                     </div>
                   </li>
-                  <li class="timeline-item">
+                  <!-- <li class="timeline-item">
                     <div class="timeline-badge info"><i class="glyphicon glyphicon-check"></i></div>
                     <div class="timeline-panel">
                       <div class="timeline-heading">
@@ -64,7 +64,7 @@
                         <span> <a> Hyberledger</a></span>
                       </div>
                     </div>
-                  </li>
+                  </li> -->
                   <li class="timeline-item">
                     <div class="timeline-badge success"><i class="glyphicon glyphicon-check"></i></div>
                     <div class="timeline-panel">
@@ -231,9 +231,14 @@
             </b-col>
           </b-row>
 
-          <b-col lg="12">
-            <c-table :table-data="items" :fields="fields" caption="<i class='fa fa-align-justify'></i> Purchase Orders"></c-table>
-          </b-col>
+          <b-row>
+            <b-col md="6">
+              <c-table :table-data="items" :fields="fields" caption="<i class='fa fa-align-justify'></i> Purchase Orders"></c-table>
+            </b-col>
+            <b-col  md="6" v-if="orderHistory.length">
+              <c-table :table-data="orderHistory" :fields="hfields" caption="<i class='fa fa-align-justify'></i>  Order Histroy"></c-table>
+            </b-col>
+          </b-row>
           <b-row v-if="!isBuyer() && order.status !== 'Completed' && order.status !== 'Return' ">
             <b-col md="12">
             <b-form-group label="Remarks" label-for="remark" :label-cols="5" :horizontal="true">
@@ -263,12 +268,12 @@
                  <b-button type="button" @click="sellerConfirm('Reject')" size="md" variant="primary"><i class="fa fa-dot-circle-o"></i>
               Return</b-button>
           </div>
-          <b-row>
+          <!-- <b-row>
             <div>
              <b-button type="button" size="md" variant="primary" @click="getChanges(order.orderId)" ><i class="fa fa-dot-circle-o"></i>
-              View History</b-button>
+              View </b-button>
             </div>
-          </b-row>
+          </b-row> -->
         </b-card>
       </b-col>
     </b-row>
@@ -309,6 +314,11 @@
         timeline: {},
         order: {},
         items: [],
+        hfields:[
+          {key: 'time', label:'Created Date'},
+          {key: 'owner', label: 'Owner'},
+          {key: 'message', label: 'Changes', sortable: true},
+        ],
         orderHistory:[],
         blochainData: {},
         loading: false,
@@ -432,9 +442,14 @@
                 self.showerr = true;
                 self.errmsg = res.message;
               } else {
-                self.succesmsg = true;
-                self.orderHistory = res.data;
-                self.showHisModal()
+                self.orderHistory = res.data.map( n => {
+                    let obj = {
+                      time: n.time,
+                      owner: self.getUsername(n.owner),
+                      message: n.message
+                    }
+                    return obj;
+                  });
               }
             }, err => {
               self.scrollToTop()
@@ -442,6 +457,14 @@
               self.errhandler(err)
             }
         )
+      },
+      getUsername(address){
+        let self = this;
+        if(self.order.buyer.walletAddress === address){
+          return 'Buyer'
+        }else {
+          return 'Seller'
+        }
       },
       getBlockchainOrder() {
         let self = this;
@@ -554,6 +577,7 @@
                 self.items = res.data.items
                 self.buyerDetails = res.data.buyer
                 self.timeline = res.data.timeline
+                self.getChanges(self.order.orderId);
               }
             },
             err => {
@@ -583,7 +607,7 @@
   }
 
 </script>
-<style scoped>
+<style >
   .chainlogo {
     float: right;
     width: 100px;

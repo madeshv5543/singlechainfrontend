@@ -15,13 +15,8 @@ items:[
     icon: 'icon-speedometer',
   },
   {
-    name: 'New Order',
-    url: '/newOrder',
-    icon: 'icon-speedometer',
-  },
-  {
-    name: 'New Loc',
-    url: '/newLoc',
+    name: 'Letter Of Credit',
+    url: '/loc',
     icon: 'icon-speedometer'
   }
 ],
@@ -39,6 +34,27 @@ seller:[
     name: 'Purchase Order',
     url: '/purchaseOrders',
     icon: 'icon-speedometer',
+  },
+  {
+    name: 'Letter Of Credit',
+    url: '/loc',
+    icon: 'icon-speedometer'
+  }
+],
+banker:[
+  {
+    name: 'Dashboard',
+    url: '/dashboard',
+    icon: 'icon-speedometer',
+    // badge: {
+    //   variant: 'primary',
+    //   text: 'NEW'
+    // }
+  },
+  {
+    name: 'Letter Of Credit',
+    url: '/loc',
+    icon: 'icon-speedometer'
   }
 ]
 }

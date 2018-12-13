@@ -85,6 +85,72 @@ export const resentToseller = (orderId, data) => {
         return axios.post(`${API_URL}${EndPoints.RESENT_ORDER}${orderId}`, data, header).then(res => res.data)
 }
 
+export const placeLoc = (data) => {
+    const header = { "headers" : utils.authHeader()};
+    return axios.post(`${API_URL}${EndPoints.NEW_LOC}`, data, header).then(res => res.data)
+}
+
+export const getLocList = () => {
+    const header = { "headers" : utils.authHeader()};
+    return axios.get(`${API_URL}${EndPoints.LOC_LIST}`, header).then( res =>  res.data)
+}
+
+export const getLocDetails = (id) => {
+    const header = { "headers" : utils.authHeader()};
+    return axios.get(`${API_URL}${EndPoints.LOC_DETAILS}${id}`, header).then( res =>  res.data);
+}
+
+export const updateLoc = (id, data) => {
+    const header = { "headers" : utils.authHeader()};
+    return axios.post(`${API_URL}${EndPoints.LOC_UPDATE}${id}`, data, header).then(res => res.data);
+}
+
+export const sentBuyerBank = (id) => {
+    const header = {"headers": utils.authHeader()};
+    console.log("here")
+    return axios.post(`${API_URL}${EndPoints.SENT_BUYERBANK}${id}`, {}, header).then(res => res.data);
+}
+
+export const transferToSellerBank = (id, data) => {
+    const header = { "headers" : utils.authHeader()};
+    return axios.post(`${API_URL}${EndPoints.SENT_SELLERBANK}${id}`, data, header).then(res => res.data);
+}
+
+export const sentToBuyer =( id, data) => {
+    const header = { "headers" : utils.authHeader()};
+    return axios.post(`${API_URL}${EndPoints.SENT_BUYER}${id}`, data, header).then( res => res.data);
+}
+
+export const resentToBank = (id, data) => {
+    const header = { "headers" : utils.authHeader()};
+    return axios.post(`${API_URL}${EndPoints.RESENT_BANK}${id}`, data, header).then( res => res.data);
+}
+
+export const transferToSeller = (id, data) => {
+    const header = { "headers" : utils.authHeader()};
+    return axios.post(`${API_URL}${EndPoints.SENTLC_TO_SELLER}${id}`, data, header).then( res => res.data);
+}
+
+export const returnToBuyerBank = (id, data) => {
+    const header = { "headers" : utils.authHeader()};
+    return axios.post(`${API_URL}${EndPoints.RETURN_TO_BUYERBANK}${id}`, data, header).then( res => res.data);
+}
+
+export const sellerConfirm = (id, data) => {
+    const header = { "headers" : utils.authHeader()};
+    return axios.post(`${API_URL}${EndPoints.SELLER_CONFIRM}${id}`, data, header).then( res => res.data);
+}
+
+export const sellerReturn = (id, data) => {
+    const header = { "headers" : utils.authHeader()};
+    return axios.post(`${API_URL}${EndPoints.SELLER_RETURN}${id}`, data, header).then( res => res.data);
+}
+
+export const reSentToSellerBank = (id, data) => {
+    const header = { "headers" : utils.authHeader()};
+    return axios.post(`${API_URL}${EndPoints.RESENT_TO_SELLERBANK}${id}`, data, header).then( res => res.data)
+}
+
 export default {
     getUser,
     updateUser,
@@ -101,5 +167,18 @@ export default {
     getBankerlist,
     getBlockchainOrder,
     getOrderHistory,
-    resentToseller
+    resentToseller,
+    placeLoc,
+    getLocList,
+    getLocDetails,
+    updateLoc,
+    sentBuyerBank,
+    transferToSellerBank,
+    sentToBuyer,
+    resentToBank,
+    transferToSeller,
+    returnToBuyerBank,
+    sellerConfirm,
+    sellerReturn,
+    reSentToSellerBank
 }

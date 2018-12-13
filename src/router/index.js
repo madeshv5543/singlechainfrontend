@@ -65,6 +65,11 @@ const profile = () => import('@/views/mypages/profile')
 const editOrder = () => import('@/views/mypages/editOrder')
 const viewOrder = () => import('@/views/mypages/orderview')
 const newLoc = () => import('@/views/mypages/createLoc')
+const poLanding  =  () => import('@/views/mypages/polanding')
+const locLanding = () => import('@/views/mypages/locLanding')
+const locList = () => import('@/views/mypages/loclist')
+const editLoc = () => import('@/views/mypages/editLoc')
+const viewLoc = () => import('@/views/mypages/viewLoc')
 
 Vue.use(Router)
 
@@ -87,7 +92,23 @@ const router = new Router({
         {
           path: '/purchaseOrders',
           name: 'PurchaseOrder',
+          component: poLanding
+        },
+        {
+          path: '/purchaseOrderList',
+          name: 'PurchaseOrderList',
           component: PurchasOrder
+        },
+        {
+          path: '/loc',
+          name: 'Loc',
+          component: locLanding
+
+        },
+        {
+          path: '/loclist',
+          name: 'LocList',
+          component: locList
         },
         {
           path: '/newOrder',
@@ -100,9 +121,19 @@ const router = new Router({
           component: newLoc
         },
         {
+          path: '/editLoc/:id',
+          name: 'EditLoc',
+          component: editLoc
+        },
+        {
+          path: '/viewLoc/:id',
+          name: 'ViewLoc',
+          component: viewLoc
+        },
+        {
           path: '/myprofile',
           name: 'MyProfile',
-          component: profile
+          component:  profile
         },
         {
           path: '/editOrder/:id',

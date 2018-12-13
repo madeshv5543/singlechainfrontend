@@ -11,6 +11,7 @@ import VueAxios from 'vue-axios'
 import VeeValidate from 'vee-validate';
 import VueElementLoading from 'vue-element-loading'
 import TreeView from "vue-json-tree-view"
+import Datepicker from 'vuejs-datepicker';
  
  
 import App from './App'
@@ -25,6 +26,7 @@ Vue.use(BootstrapVue)
 Vue.use(VueAxios, axios)
 Vue.use(VeeValidate);
 Vue.component('VueElementLoading', VueElementLoading)
+Vue.component('Datepicker', Datepicker)
 Vue.use(TreeView)
 
 /* eslint-disable no-new */

@@ -97,8 +97,10 @@ export default {
     nav () {
       if(jwtService.isSeller()) {
         return nav.seller
+      }else if(jwtService.isBanker()){
+        return nav.banker
       }else{
-        return nav.items
+        return nav.items;
       }
     },
     list () {
