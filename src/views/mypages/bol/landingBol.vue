@@ -10,11 +10,11 @@
             <b-col md="6" class="barc">
               <div class="vc">
                 <div>
-                  <router-link to="/loclist"> <b-button type="button" size="md" variant="primary"> <i class="fa fa-list"> LC List</i></b-button></router-link>
+                  <router-link to="/bolList"> <b-button type="button" size="md" variant="primary"> <i class="fa fa-list"> BOL List</i></b-button></router-link>
                 </div>
                 <br>
                 <div>
-                <router-link to="/newLoc"> <b-button type="button" size="md" variant="primary"> <i class="fa fa-plus"> Create A New LC</i></b-button> </router-link> 
+                <router-link to="/createBol"> <b-button type="button" size="md" variant="primary"> <i class="fa fa-plus"> Create A New BOL</i></b-button> </router-link> 
                 </div>
               </div>
             </b-col>
@@ -24,24 +24,26 @@
     </b-row>
   </div>
 </template>
+
 <script>
-  export default {
-    name: 'loclanding',
+export default {
+    name: 'landingBol',
     props:{
       onboardImg: {
-      type: String,
-      default: require('@/assets/lconboard.jpg')
+        type: String,
+        default: require('@/assets/lconboard.jpg')
+      },
     },
-    },
-    data: () => {
+    data : () => {
         return {
 
         }
     },
     methods: {}
-  }
-
+}
 </script>
+
+
 <style>
 .barc{
     margin: 20px 0;

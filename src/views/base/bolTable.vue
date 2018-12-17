@@ -11,12 +11,6 @@
         <b-button type="button" @click="$emit('view-Item', data.item._id)" size="sm" variant="primary"><i class="fa fa-eye"></i></b-button>
         <!-- <b-badge :variant="getBadge(data.item.status)">{{data.item.status}}</b-badge> -->
       </template>
-      <template slot="seller" slot-scope="data">
-        {{getData(data.item.seller)}}
-      </template>
-      <template slot="buyer" slot-scope="data">
-          {{getData(data.item.buyer)}}
-        </template>
       <template slot="shipper" slot-scope="data">
         {{getData(data.item.shipper)}}
       </template>
@@ -36,7 +30,7 @@
 <script>
 import jwtService from '@/services/utils.js'
 export default {
-  name: 'l-table',
+  name: 'bol-table',
   inheritAttrs: false,
   props: {
     caption: {
@@ -109,7 +103,7 @@ export default {
     },
     isOwner: function(item){
       if(Object.keys(this.user).length){
-        return this.user.email === item.buyer.email && this.user.email === item.currentholder
+        return this.user.email === item.shipper.email 
       }else{
         return false
       }

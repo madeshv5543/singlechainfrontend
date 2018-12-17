@@ -76,6 +76,12 @@ const locLanding = () => import('@/views/mypages/locLanding')
 const locList = () => import('@/views/mypages/loclist')
 const editLoc = () => import('@/views/mypages/editLoc')
 const viewLoc = () => import('@/views/mypages/viewLoc')
+const BolLanding  = () => import('@/views/mypages/bol/landingBol')
+const CreateBol = () => import('@/views/mypages/bol/createBol')
+const BolList = () => import('@/views/mypages/bol/bolList')
+const EditBol = () => import('@/views/mypages/bol/editBol')
+const Viewbol= () => import('@/views/mypages/bol/viewBol')
+
 
 Vue.use(Router)
 
@@ -148,7 +154,7 @@ const router = new Router({
         {
           path: '/editLoc/:id',
           name: 'EditLoc',
-          component: editLoc
+          component: editLoc        
         },
         {
           path: '/viewLoc/:id',
@@ -170,7 +176,31 @@ const router = new Router({
           name: 'ViewOrder',
           component: viewOrder
         },
-       
+        {
+          path: '/bol',
+          name: "BolLanding",
+          component: BolLanding
+        },
+        {
+          path: '/createBol',
+          name: 'CreateBol',
+          component: CreateBol
+        },
+        {
+          path: '/bolList',
+          name: 'BolList',
+          component: BolList
+        },
+        {
+          path: '/editBol/:id',
+          name: 'EditBol',
+          component: EditBol
+        },
+        {
+          path: '/viewBol/:id',
+          name: 'ViewBol',
+          component: Viewbol
+        },
         {
           path: 'theme',
           redirect: '/theme/colors',

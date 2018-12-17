@@ -367,6 +367,29 @@
               </b-col>
             </b-row>
           </div>
+          <hr>
+              <div class="searchable-container">
+                <b-row>
+                  <!-- <b-col md="12"> -->
+                  <b-col md="4" class="items" v-cloak v-for="(attachment, index) in attachments" :key="index">
+                    <div class="info-block block-info clearfix">
+                        <div class="square-box pull-left">
+                            <span class="fa fa-tags"></span>
+                        </div>
+                        <div data-toggle="buttons" class="btn-group bizmoduleselect">
+                            <label class="btn btn-default">
+                                <div class="bizcontent">
+                                   <a :href="getDownloadUrl(attachment.fileName)" ><span  class="fa fa-cloud-download"></span> </a>
+                                    <h5>{{ attachment.actualName }}</h5>
+                                    
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </b-col>
+                  <!-- </b-col> -->
+                </b-row>
+              </div>
           <div v-if="locDetails.status !== status.new &&  isOwner() ">
             <hr>
             <b-row v-if="locDetails.status !== status.new && locDetails.status !== status.completed">
@@ -376,15 +399,16 @@
                 </b-form-group>
               </b-col>
             </b-row>
-            <b-row v-if="isBuyerBank()">
+            <!-- <b-row v-if="isBuyerBank()">
               <b-col md="12">
                 <b-form-group label="Select Banker" label-for="basicSelectLg" :label-cols="3" :horizontal="true">
                   <b-form-select id="basicSelectLg" size="lg" :plain="true" :options="bankers" v-model="banker">
                   </b-form-select>
                 </b-form-group>
               </b-col>
-            </b-row>
+            </b-row> -->
           </div>
+          <br>
           <b-button type="button" variant="primary" @click="viewOder(locDetails.order)"> <i class="fa fa-eye"></i> View
             Purchase Order</b-button>
           <div slot="footer" class="txt-cen">
@@ -431,6 +455,7 @@
 <script>
   import cTable from '../base/Table.vue'
   import userService from '@/services/userService.js'
+  import config from '@/services/config.js'
   import jwtService from '@/services/utils.js'
   export default {
     name: 'viewloc',
@@ -518,6 +543,9 @@
               self.errhandler(err)
             }
           )
+      },
+      getDownloadUrl(file){
+        return `${config.DOC_URL}${file}`;
       },
       resentToSellerBank(){
         let self = this;
@@ -753,17 +781,17 @@
       sentTosellerBank() {
         let self = this;
         self.clearErr();
-        if (!Object.keys(self.banker).length) {
-          self.showErr = true;
-          self.errMsg = "Select the bank to transfer."
-          self.scrollToTop()
-          return;
-        }
-        let data = {
-          banker: self.banker._id
-        }
+        // if (!Object.keys(self.banker).length) {
+        //   self.showErr = true;
+        //   self.errMsg = "Select the bank to transfer."
+        //   self.scrollToTop()
+        //   return;
+        // }
+        // let data = {
+        //   banker: self.banker._id
+        // }
         self.loading = true;
-        userService.transferToSellerBank(self.locId, data)
+        userService.transferToSellerBank(self.locId, {})
           .then(
             res => {
                self.loading = false
@@ -815,6 +843,7 @@
       setTimeline(lc){
         console.log("lcde",lc.timeline)
         this.timeline = lc.timeline;
+        this.attachments = lc.documets
       },
       getLocDetails: function () {
         let self = this;
@@ -1167,5 +1196,17 @@
   .linwh {
     color: white;
   }
+
+  .searchable-container{margin:20px 0 0 0}
+.searchable-container label.btn-default.active{background-color:#007ba7;color:#FFF}
+.searchable-container label.btn-default{border:1px solid #efefef;margin:5px; box-shadow:5px 8px 8px 0 #ccc;}
+/* .searchable-container label .bizcontent{width:100%;} */
+/* .searchable-container .btn-group{width:90%} */
+.searchable-container .btn span.fa{
+    opacity: 1;
+}
+.searchable-container .btn.active span.fa {
+    opacity: 1;
+}
 
 </style>

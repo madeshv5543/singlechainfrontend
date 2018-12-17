@@ -31,7 +31,11 @@ items:[
     url: '/list',
     icon: 'icon-speedometer',
   },
- 
+ {
+   name: "Bill Of lading",
+   url: '/bol',
+   icon: 'icon-speedometer'
+ }
 ],
 seller:[
   {
@@ -51,6 +55,11 @@ seller:[
   {
     name: 'Letter Of Credit',
     url: '/loc',
+    icon: 'icon-speedometer'
+  },
+  {
+    name: "Bill Of lading",
+    url: '/bol',
     icon: 'icon-speedometer'
   }
 ],

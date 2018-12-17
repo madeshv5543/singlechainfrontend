@@ -87,6 +87,7 @@ export const resentToseller = (orderId, data) => {
 
 export const placeLoc = (data) => {
     const header = { "headers" : utils.authHeader()};
+    header['headers']["Content-Type"] = "multipart/form-data";
     return axios.post(`${API_URL}${EndPoints.NEW_LOC}`, data, header).then(res => res.data)
 }
 
@@ -151,6 +152,59 @@ export const reSentToSellerBank = (id, data) => {
     return axios.post(`${API_URL}${EndPoints.RESENT_TO_SELLERBANK}${id}`, data, header).then( res => res.data)
 }
 
+export const addProduct = (data) => {
+      const headers = { "headers" : utils.authHeader()};
+      headers['headers']["Content-Type"] = "multipart/form-data";
+      return axios.post(`${API_URL}${EndPoints.ADD_PRODUCT}`, data, headers).then( res => res.data)
+}
+
+export const getProdcutList =() => {
+    const header = { "headers" : utils.authHeader()};
+    return axios.get(`${API_URL}${EndPoints.PRODUCT_LIST}`,header).then(res => res.data)
+}
+
+export const updateProduct = (id, data) => {
+    const headers = { "headers" : utils.authHeader()};
+    headers['headers']["Content-Type"] = "multipart/form-data";
+    return axios.post(`${API_URL}${EndPoints.UPDATE_PRODUCT}${id}`, data, headers)
+}
+
+export const getProduct = (id) => {
+    const headers = { "headers" : utils.authHeader()};
+    return axios.get(`${API_URL}${EndPoints.GET_PRODUCT}${id}`, headers).then(res => res.data)
+}
+
+export const deleteProduct = (id) => {
+    const headers = { "headers" : utils.authHeader()};
+    return axios.post(`${API_URL}${EndPoints.DELETE_PRODUCT}${id}`, {}, headers).then(res=> res.data)
+}
+
+
+export const createBol = (data) => {
+    const headers = { "headers" : utils.authHeader() };
+    return axios.post(`${API_URL}${EndPoints.CREATE_BOL}`, data, headers).then(res => res.data)
+}
+
+export const getBolList = () => {
+    const headers = { "headers" : utils.authHeader() };
+    return axios.get(`${API_URL}${EndPoints.BOL_LIST}`, headers).then(res => res.data);
+}
+
+export const getBolDetails = (id) => {
+    const headers = {  "headers" : utils.authHeader() };
+    return axios.get(`${API_URL}${EndPoints.BOL_DETAILS}${id}`, headers ).then(res => res.data)
+}
+
+export const updateBolDetails = (id, data) => {
+    const headers = { "headers" : utils.authHeader() };
+    return axios.post(`${API_URL}${EndPoints.BOL_EDit}${id}`, data, headers).then(res => res.data);
+} 
+
+export const deleteBol =(id) => {
+    const headers = { "headers" : utils.authHeader()};
+    return axios.post(`${API_URL}${EndPoints.DELETE_BOL}${id}`, {},  headers)
+}
+
 export default {
     getUser,
     updateUser,
@@ -180,5 +234,15 @@ export default {
     returnToBuyerBank,
     sellerConfirm,
     sellerReturn,
-    reSentToSellerBank
+    reSentToSellerBank,
+    addProduct,
+    getProdcutList,
+    updateProduct,
+    getProduct,
+    deleteProduct,
+    createBol,
+    getBolList,
+    getBolDetails,
+    updateBolDetails,
+    deleteBol
 }

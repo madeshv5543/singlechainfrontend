@@ -18,7 +18,7 @@
                 </b-form-group>
               </b-col>
               <b-col md="6">
-                <b-form-group label="Select Banker" label-for="basicSelectLg" :label-cols="3" :horizontal="true">
+                <b-form-group label="Select Buyer Bank" label-for="basicSelectLg" :label-cols="3" :horizontal="true">
                   <b-form-select id="basicSelectLg" size="lg" :plain="true" :options="bankers" v-model="banker">
                   </b-form-select>
                 </b-form-group>
@@ -63,6 +63,48 @@
                 </b-form-group>
               </b-col>
             </b-row>
+            <b-row>
+            <b-col md="6">
+                <b-form-group label="Select Seller Bank" label-for="basicSelectLg" :label-cols="3" :horizontal="true">
+                  <b-form-select id="basicSelectLg" size="lg" :plain="true" :options="bankers"   v-model="sellerBank">
+                  </b-form-select>
+                </b-form-group>
+              </b-col>
+              <b-col md="6">
+                <b-form-group>
+                       <b-form-file v-model="file"  @change="uploadFieldChange" multiple :state="Boolean(file)" placeholder="Additional Documents"></b-form-file>
+                </b-form-group>
+              </b-col>
+                <!-- <div class="col-md-12">
+                    <div class="attachment-holder animated fadeIn" v-cloak v-for="(attachment, index) in attachments" :key="index"> 
+                        <span class="label label-primary">{{ attachment.name + ' (' + Number((attachment.size / 1024 / 1024).toFixed(1)) + 'MB)'}}</span> 
+                        <span class="" style="background: red; cursor: pointer;" ><button class="btn btn-xs btn-danger">Remove</button></span>
+                    </div>
+                </div> -->
+            </b-row>
+                <hr>
+              <div class="searchable-container">
+                <b-row>
+                  <!-- <b-col md="12"> -->
+                  <b-col md="4" class="items" v-cloak v-for="(attachment, index) in attachments" :key="index">
+                    <div class="info-block block-info clearfix">
+                        <div class="square-box pull-left">
+                            <span class="fa fa-tags"></span>
+                        </div>
+                        <div data-toggle="buttons" class="btn-group bizmoduleselect">
+                            <label class="btn btn-default">
+                                <div class="bizcontent">
+                                    <span @click="removeAttachment(attachment)" class="fa fa-minus-circle"></span>
+                                    <h5>{{ attachment.name + ' (' + Number((attachment.size / 1024 / 1024).toFixed(1)) + 'MB)'}}</h5>
+                                    
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </b-col>
+                  <!-- </b-col> -->
+                </b-row>
+              </div>
             <div v-if="Object.keys(order).length">
               <div role="tablist">
                 <b-card no-body class="mb-1">
@@ -112,7 +154,7 @@
                 </b-card>
                 <b-card no-body class="mb-1" v-if="Object.keys(banker).length">
                   <b-card-header header-tag="header" class="p-1" role="tab">
-                    <b-btn block href="#" v-b-toggle.accordion3 variant="info">Banker Details</b-btn>
+                    <b-btn block href="#" v-b-toggle.accordion3 variant="info">Buyer Bank Details</b-btn>
                   </b-card-header>
                   <b-collapse id="accordion3" accordion="my-accordion" role="tabpanel">
                     <b-card-body>
@@ -128,6 +170,29 @@
                           <b-col md="3"> <strong> Phone Number: {{banker.phoneNumber}} </strong></b-col>
                           <b-col md="3"> <strong> Email : {{banker.email}} </strong></b-col>
                           <b-col md="3"> <strong> UserName : {{banker.username}} </strong> </b-col>
+                        </b-row>
+                      </p>
+                    </b-card-body>
+                  </b-collapse>
+                </b-card>
+                <b-card no-body class="mb-1" v-if="Object.keys(sellerBank).length">
+                  <b-card-header header-tag="header" class="p-1" role="tab">
+                    <b-btn block href="#" v-b-toggle.accordion4 variant="info">Seller Bank Details</b-btn>
+                  </b-card-header>
+                  <b-collapse id="accordion4" accordion="my-accordion" role="tabpanel">
+                    <b-card-body>
+                      <p class="card-text">
+                        <b-row>
+                          <b-col md="3"><strong> Organization : {{sellerBank.orgName}}</strong></b-col>
+                          <b-col md="3"><strong>Address : {{sellerBank.address}}</strong></b-col>
+                          <b-col md="3"><strong> City : {{sellerBank.city}} </strong></b-col>
+                          <b-col md="3"><strong> Country : {{sellerBank.country}} </strong> </b-col>
+                        </b-row>
+                        <b-row>
+                          <!-- <b-col md="3"> <strong> Company Name : {{sellerDetails.companyName}} </strong> </b-col> -->
+                          <b-col md="3"> <strong> Phone Number: {{sellerBank.phoneNumber}} </strong></b-col>
+                          <b-col md="3"> <strong> Email : {{sellerBank.email}} </strong></b-col>
+                          <b-col md="3"> <strong> UserName : {{sellerBank.username}} </strong> </b-col>
                         </b-row>
                       </p>
                     </b-card-body>
@@ -159,6 +224,7 @@
       return {
         lcform: {},
         selected: [],
+        file:null, 
         item: {}, // Must be an array reference!
         show: true,
         accNo: '',
@@ -166,7 +232,9 @@
         itemsArray: [],
         sellerListArray: [],
         bankerListArray: [],
+        refBankArray : [],
         orderArray: [],
+        attachments:[],
         sucmsg: false,
         sugmssg: '',
         errmsg: '',
@@ -174,6 +242,7 @@
         loading: false,
         order: {},
         banker: {},
+        sellerBank: {},
         fields: [{
             key: 'product',
             label: 'Product',
@@ -205,15 +274,50 @@
         let self = this;
         self.item = {}
       },
+      removeAttachment(attachment) {   
+          this.attachments.splice(this.attachments.indexOf(attachment), 1);
+      },
+      uploadFieldChange(e) {
+          var files = e.target.files || e.dataTransfer.files;
+          if (!files.length)
+              return;
+          for (var i = files.length - 1; i >= 0; i--) {
+              this.attachments.push(files[i]);
+          }
+          console.log("files", this.attachments)
+      },
       placeOrder() {
         let self = this;
-        let data = {
-          order : self.order._id,
-          banker : self.banker._id,
-          seller : self.order.seller._id,
-          buyer : self.order.buyer._id,
-          ...self.lcform
+        console.log("file", this.file)
+        if(this.sellerBank._id == this.banker._id) {
+          self.errmsg = "Buyer bank and seller bank should not be same";
+          self.showErr = true;
+          return
+        } 
+        let data = new FormData();
+        data.append('order', self.order._id)
+        data.append('banker', self.banker._id)
+        data.append('seller', self.order.seller._id)
+        data.append('buyer', self.order.buyer._id)
+        data.append('sellerBank', self.sellerBank._id)
+        data.append('accNo', self.lcform.accNo)
+        data.append('goodsValue', self.lcform.goodsValue)
+        data.append('shipmentDate', self.lcform.shipmentDate)
+        data.append('expiryDate', self.lcform.expiryDate)
+        data.append('portOfDestination', self.lcform.portOfDestination)
+        data.append('portOfDeparture', self.lcform.portOfDeparture)
+        for(let i=0; i< self.attachments.length; i++){
+          data.append('file'+1, self.attachments[i])
         }
+        // data.append('file', self.file)
+        // let data = {
+        //   order : self.order._id,
+        //   banker : self.banker._id,
+        //   seller : self.order.seller._id,
+        //   buyer : self.order.buyer._id,
+        //   sellerBank : self.sellerBank._id,
+        //   ...self.lcform
+        // }
         self.sucmsg = false;
         self.errmsg = null;
         self.showErr = false;
@@ -250,6 +354,7 @@
             res => {
               if (res.status == 200) {
                 this.bankerListArray = res.data
+                this.refBankArray = res.data
               }
             },
             err => {
@@ -293,7 +398,6 @@
         return sellerlist;
       },
       bankers: function () {
-        console.log("this bamk", this.bankerListArray)
         let sellerlist = this.bankerListArray.map(n => {
           let obj = {
             text: `${n.username} - ${n.email}`,
@@ -322,5 +426,17 @@
   .fade-leave-to {
     opacity: 0;
   }
+
+.searchable-container{margin:20px 0 0 0}
+.searchable-container label.btn-default.active{background-color:#007ba7;color:#FFF}
+.searchable-container label.btn-default{border:1px solid #efefef;margin:5px; box-shadow:5px 8px 8px 0 #ccc;}
+.searchable-container label .bizcontent{width:100%;}
+.searchable-container .btn-group{width:90%}
+.searchable-container .btn span.fa{
+    opacity: 1;
+}
+.searchable-container .btn.active span.fa {
+    opacity: 1;
+}
 
 </style>

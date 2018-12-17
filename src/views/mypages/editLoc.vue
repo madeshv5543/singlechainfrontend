@@ -9,7 +9,7 @@
           </div>
           <b-alert v-if="sucmsg" variant="success" show>Loc Details updated Successfully.</b-alert>
           <b-alert v-if="showErr" variant="danger" show>{{errmsg}}</b-alert>
-          <b-form>
+          <b-form v-if="Object.keys(locDetails).length"> 
             <b-row>
               <b-col md="6">
                 <b-form-group label="Select order" label-for="basicSelectLg" :label-cols="3" :horizontal="true">
@@ -60,6 +60,14 @@
               <b-col md="6">
                 <b-form-group label="Port of Departure" label-for="departurePort" :label-cols="3" :horizontal="true">
                   <b-form-input type="text" id="departurePort" v-model="lcform.portOfDeparture"></b-form-input>
+                </b-form-group>
+              </b-col>
+            </b-row>
+            <b-row>
+               <b-col md="6">
+                <b-form-group label="Select Banker" label-for="basicSelectLg" :label-cols="3" :horizontal="true">
+                  <b-form-select id="basicSelectLg" size="lg" :plain="true" :options="bankers" v-model="sellerBank">
+                  </b-form-select>
                 </b-form-group>
               </b-col>
             </b-row>
@@ -133,6 +141,29 @@
                     </b-card-body>
                   </b-collapse>
                 </b-card>
+                <b-card no-body class="mb-1" v-if="Object.keys(sellerBank).length">
+                  <b-card-header header-tag="header" class="p-1" role="tab">
+                    <b-btn block href="#" v-b-toggle.accordion4 variant="info">Seller Bank Details</b-btn>
+                  </b-card-header>
+                  <b-collapse id="accordion4" accordion="my-accordion" role="tabpanel">
+                    <b-card-body>
+                      <p class="card-text">
+                        <b-row>
+                          <b-col md="3"><strong> Organization : {{sellerBank.orgName}}</strong></b-col>
+                          <b-col md="3"><strong>Address : {{sellerBank.address}}</strong></b-col>
+                          <b-col md="3"><strong> City : {{sellerBank.city}} </strong></b-col>
+                          <b-col md="3"><strong> Country : {{sellerBank.country}} </strong> </b-col>
+                        </b-row>
+                        <b-row>
+                          <!-- <b-col md="3"> <strong> Company Name : {{sellerDetails.companyName}} </strong> </b-col> -->
+                          <b-col md="3"> <strong> Phone Number: {{sellerBank.phoneNumber}} </strong></b-col>
+                          <b-col md="3"> <strong> Email : {{sellerBank.email}} </strong></b-col>
+                          <b-col md="3"> <strong> UserName : {{sellerBank.username}} </strong> </b-col>
+                        </b-row>
+                      </p>
+                    </b-card-body>
+                  </b-collapse>
+                </b-card>
               </div>
             </div>
           </b-form>
@@ -162,6 +193,7 @@ export default {
             bankerListArray : [],
             order:{},
             banker: {},
+            sellerBank:{},
             loading: false,
             sucmsg: false
         }
@@ -174,6 +206,7 @@ export default {
             banker : self.banker._id,
             seller : self.order.seller._id,
             buyer : self.order.buyer._id,
+            sellerBank : self.sellerBank._id,
             ...self.lcform
             }
             self.sucmsg = false;
@@ -236,9 +269,10 @@ export default {
         setLocDetails() {
             let self = this;
             if(Object.keys(self.locDetails).length) {
-                const { order, banker, accNo, goodsValue, shipmentDate, expiryDate, portOfDestination, portOfDeparture, seller, buyer} = self.locDetails;
+                const { order, banker, accNo, goodsValue, shipmentDate, expiryDate, portOfDestination, portOfDeparture, seller, sellerBank, buyer} = self.locDetails;
                self.banker = self.getfullDetails(self.bankerListArray, banker._id);
                self.order =self.getfullDetails(self.orderArray, order);
+               self.sellerBank = self.getfullDetails(self.bankerListArray, sellerBank._id)
                self.lcform ={
                    accNo,
                    shipmentDate,
