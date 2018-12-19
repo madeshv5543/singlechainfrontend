@@ -47,6 +47,9 @@ export const END_POINTS = {
     BOL_LIST : '/bol',
     BOL_DETAILS: '/bol/',
     BOL_EDit: '/editbol/',
-    DELETE_BOL: '/deleteBol/'
+    DELETE_BOL: '/deleteBol/',
+    SEND_TO_BUYER: '/bolSentToBuyer/',
+    RESENT_TO_BUYER: '/bolResentToBuyer/',
+    BOL_BUYER_ACTION: '/bolBuyerAction/'
  }
 export default {API_URL, END_POINTS, ID_TOKEN_KEY, USER_DATA, SELLER, BUYER, BANKER, DOC_URL};

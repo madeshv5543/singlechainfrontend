@@ -21,8 +21,8 @@
                       </div>
                       <div class="timeline-body">
                         <p v-if="!timeline.sentToBuyer">Seller Created BOL
-                        <span v-if="timeline.sentToBuyer">,
-                         and sent to Buyer </span></p>
+                          <span v-if="timeline.sentToBuyer">,
+                            and sent to Buyer </span></p>
                         <br>
                         <br>
                         <b-button v-if="timeline.sentToBuyer" type="button" size="md" variant="primary" @click="getBlockchainOrder()">
@@ -38,7 +38,8 @@
                       </div>
                       <div class="timeline-body">
                         <p v-if="!timeline.sentToBuyer">Pending</p>
-                        <p v-if="timeline.sentToBuyer">Buyer received the BOL <span v-if="timeline.buyerConfirm">, Confirm and transfer to Seller</span></p>
+                        <p v-if="timeline.sentToBuyer">Buyer received the BOL <span v-if="timeline.buyerConfirm">,
+                            Confirm and transfer to Seller</span></p>
                         <br>
                         <br>
                         <br>
@@ -204,18 +205,41 @@
               </b-col>
             </b-row>
           </div>
-          <b-row v-if="!isSeller() && bolDetails.status !== 'Completed' && bolDetails.status !== 'Return' ">
+          <hr>
+          <div class="searchable-container">
+            <b-row>
+              <!-- <b-col md="12"> -->
+              <b-col md="4" class="items" v-cloak v-for="(attachment, index) in attachments" :key="index">
+                <div class="info-block block-info clearfix">
+                  <div class="square-box pull-left">
+                    <span class="fa fa-tags"></span>
+                  </div>
+                  <div data-toggle="buttons" class="btn-group bizmoduleselect">
+                    <label class="btn btn-default">
+                      <div class="bizcontent">
+                        <a :href="getDownloadUrl(attachment.fileName)"><span class="fa fa-cloud-download"></span> </a>
+                        <h5>{{ attachment.actualName }}</h5>
+
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </b-col>
+              <!-- </b-col> -->
+            </b-row>
+          </div>
+          <b-row v-if="!isSeller() && bolDetails.status === 'Active' && bolDetails.status !== 'Return' ">
             <b-col md="12">
-            <b-form-group label="Remarks" label-for="remark" :label-cols="5" :horizontal="true">
-              <b-form-input id="remark" name="remark" v-model="remark" type="text" placeholder="Remarks"></b-form-input>
-            </b-form-group> 
+              <b-form-group label="Remarks" label-for="remark" :label-cols="5" :horizontal="true">
+                <b-form-input id="remark" name="remark" v-model="remark" type="text" placeholder="Remarks"></b-form-input>
+              </b-form-group>
             </b-col>
           </b-row>
           <b-row v-if="isSeller() && bolDetails.status === 'Return' ">
             <b-col md="12">
-            <b-form-group label="Remarks" label-for="remark" :label-cols="5" :horizontal="true">
-              <b-form-input id="remark" name="remark" v-model="remark" type="text" placeholder="Remarks"></b-form-input>
-            </b-form-group> 
+              <b-form-group label="Remarks" label-for="remark" :label-cols="5" :horizontal="true">
+                <b-form-input id="remark" name="remark" v-model="remark" type="text" placeholder="Remarks"></b-form-input>
+              </b-form-group>
             </b-col>
           </b-row>
           <div v-if="isSeller() && bolDetails.status === 'New'" slot="footer" style="text-align:center">
@@ -223,16 +247,24 @@
               Send To Buyer</b-button>
           </div>
           <div v-if="isSeller() && bolDetails.status === 'Return'" slot="footer" style="text-align:center">
-            <b-button type="button" @click="resentToBuyer()" size="md" variant="primary"><i class="fa fa-dot-circle-o"></i>
+            <b-button type="button" @click="resentBolToBuyer()" size="md" variant="primary"><i class="fa fa-dot-circle-o"></i>
               Send To Buyer</b-button>
           </div>
-          <div v-if="!isSeller() && bolDetails.status !== 'Completed'  && bolDetails.status !== 'Return' " slot="footer" style="text-align:center">
-            <b-button type="button" @click="buyerConfirm('Approve')" size="md" variant="primary"><i class="fa fa-dot-circle-o"></i>
+          <div v-if="!isSeller() && bolDetails.status === 'Active' " slot="footer" style="text-align:center">
+            <b-button type="button" @click="buyerAction('Approve')" size="md" variant="primary"><i class="fa fa-dot-circle-o"></i>
               Approve</b-button>
-                 <b-button type="button" @click="buyerConfirm('Reject')" size="md" variant="primary"><i class="fa fa-dot-circle-o"></i>
+            <b-button type="button" @click="buyerAction('Reject')" size="md" variant="primary"><i class="fa fa-dot-circle-o"></i>
               Return</b-button>
           </div>
         </b-card>
+      </b-col>
+    </b-row>
+    <b-modal ref="myModalRef" id="modal-center" centered hide-footer title="BOL Details">
+      <tree-view :data="blochainData" :options="viewerOptions"></tree-view>
+    </b-modal>
+    <b-row v-if="locChangeHistory.length">
+      <b-col lg="12">
+        <c-table :table-data="locChangeHistory" :fields="fields" caption="<i class='fa fa-align-justify'></i> BOL Changes"></c-table>
       </b-col>
     </b-row>
   </div>
@@ -242,6 +274,7 @@
   import cTable from '../../base/Table.vue'
   import userService from '@/services/userService.js'
   import utils from '@/services/utils.js';
+  import config from '@/services/config.js'
   export default {
     name: 'ViewBol',
     components: {
@@ -255,85 +288,245 @@
         showErr: false,
         errMsg: null,
         bolId: null,
-        bolDetails:{}
+        bolDetails: {},
+        attachments:[],
+        remark: null,
+        blochainData: {},
+        locChangeHistory: [],
+        fields: [{
+            key: 'time',
+            label: 'Created Date'
+          },
+          {
+            key: 'owner',
+            label: 'Owner'
+          },
+          {
+            key: 'message',
+            label: 'Changes',
+            sortable: true
+          },
+        ],
+        viewerOptions: {
+          rootObjectKey: "Bill Of Lading"
+        },
       }
     },
     methods: {
-        getBolDetails: function() {
-            let self = this;
-            self.clearErr()
-            self.bolId = self.$route.params.id;
-            self.loading = true;
-            userService.getBolDetails(self.bolId)
-            .then(
-                res => {
-                    self.loading = false;
-                    if(res.status !== 200) {
-                        self.showErr =true;
-                        self.errMsg = res.message;
-                    }else{
-                        self.bolDetails = res.data;
-                        self.timeline = self.bolDetails.timeline;
-                    }
-                },
-                err =>{
-                    self.errhandler(err)
-                }
-            )
-        },
-        sentToBuyer() {
-            let self = this;
-            self.loading = true;
-            self.showerr = false;
-            self.succesmsg = false;
-                userService.sentBolToBuyer(self.bolId)
-                .then(
-                    res => {
-                        self.scrollToTop()
-                        self.loading = false;
-                        if (res.status != 200) {
-                            self.showErr =true;
-                            self.errMsg = res.message;
-                        } else {
-                            self.showSucc = true;
-                            self.getBolDetails()
-                        }
-                    },
-                    err => {
-                        self.errhandler(err)
-                    }
-
-                )
-       },
-        isSeller() {
-            return utils.isSeller()
-        },
-        errhandler: function (err) {
-            let self = this;
-            self.loading = false
-            self.scrollToTop()
-            if (err.message) {
+      getBolDetails: function () {
+        let self = this;
+        // self.clearErr()
+        self.bolId = self.$route.params.id;
+        self.loading = true;
+        userService.getBolDetails(self.bolId)
+          .then(
+            res => {
+              self.loading = false;
+              if (res.status !== 200) {
                 self.showErr = true;
-                self.errMsg = err.message;
-            } else {
-                self.showErr = true;
-                self.errMsg = 'Something Went wrong. Please try after sometime.';
+                self.errMsg = res.message;
+              } else {
+                self.bolDetails = res.data;
+                self.timeline = self.bolDetails.timeline;
+                self.attachments = self.bolDetails.documents;
+                console.log("self", self.attachments)
+                self.getChanges(self.bolDetails.bolId)
+              }
+            },
+            err => {
+              self.errhandler(err)
             }
-        },
-        clearErr() {
-            let self = this;
-            self.showErr = false;
-            self.errMsg = null;
-            self.sugMsg = null;
-            self.showSucc = false;
-            self.loading = false
-        },
-        scrollToTop() {
-            window.scrollTo(0, 0);
-        },
+          )
+      },
+      getDownloadUrl(file){
+        return `${config.DOC_URL}${file}`;
+      },
+      getUsername(address) {
+        let self = this;
+        if (self.bolDetails.shipper.walletAddress === address) {
+          return 'Seller'
+        } else {
+          return 'Buyer'
+        }
+      },
+      getChanges(orderId) {
+        let self = this;
+        userService.getOrderHistory(orderId)
+          .then(
+            res => {
+              self.scrollToTop()
+              self.loading = false;
+              if (res.status != 200) {
+                self.showerr = true;
+                self.errmsg = res.message;
+              } else {
+                if (res.data.length) {
+                  self.locChangeHistory = res.data.map(n => {
+                    let obj = {
+                      time: n.time,
+                      owner: self.getUsername(n.owner),
+                      message: n.message
+                    }
+                    return obj;
+                  });
+                } else {
+                  self.locChangeHistory = [];
+                }
+                console.log("history", res.data)
+                // self.showHisModal()
+              }
+            }, err => {
+              self.scrollToTop()
+              self.loading = false
+              self.errhandler(err)
+            }
+          )
+      },
+      showModal() {
+        this.$refs.myModalRef.show()
+      },
+      hideModal() {
+        this.$refs.myModalRef.hide()
+      },
+      getBlockchainOrder() {
+        let self = this;
+        self.loading = true;
+        self.showerr = false;
+        self.blochainData = {};
+        userService.getBlockchainOrder(self.bolDetails.bolId)
+          .then(
+            res => {
+              self.scrollToTop()
+              self.loading = false;
+              if (res.status != 200) {
+                self.showerr = true;
+                self.errmsg = res.message;
+              } else {
+                self.succesmsg = true;
+                self.blochainData = res.data;
+                self.showModal()
+              }
+            }, err => {
+              self.scrollToTop()
+              self.loading = false
+              self.errhandler(err)
+            }
+          )
+      },
+      sentToBuyer() {
+        let self = this;
+        self.clearErr()
+        self.loading = true;
+        userService.sentBolToBuyer(self.bolId)
+          .then(
+            res => {
+              self.scrollToTop()
+              self.loading = false;
+              if (res.status != 200) {
+                self.showErr = true;
+                self.errMsg = res.message;
+              } else {
+                self.showSucc = true;
+                self.getBolDetails()
+              }
+            },
+            err => {
+              self.errhandler(err)
+            }
+
+          )
+      },
+      resentBolToBuyer() {
+        let self = this;
+        self.clearErr()
+        if (!self.remark) {
+          self.showErr = true;
+          self.errMsg = 'Please Enter remark for better understanding';
+          return;
+        }
+        self.loading = true;
+        let data = {
+          remark: self.remark
+        }
+        userService.resentBolToBuyer(self.bolId, data)
+          .then(
+            res => {
+              self.scrollToTop()
+              self.loading = false;
+              if (res.status != 200) {
+                self.showErr = true;
+                self.errMsg = res.message;
+              } else {
+                self.showSucc = true;
+                self.getBolDetails()
+              }
+            },
+            err => {
+              self.errhandler(err)
+            }
+
+          )
+      },
+      buyerAction(action) {
+        let self = this;
+        self.clearErr();
+        if (!self.remark) {
+          self.showErr = true;
+          self.errMsg = 'please Enter remark for better understanding';
+          return;
+        }
+        self.loading = false;
+        let data = {
+          remark: self.remark,
+          action
+        }
+        userService.buyerActionToBol(self.bolId, data)
+          .then(
+            res => {
+              self.scrollToTop();
+              self.loading = false;
+              if (res.status != 200) {
+                self.showErr = true;
+                self.errMsg = res.message
+              } else {
+                self.showSucc = true;
+                self.getBolDetails()
+              }
+            },
+            err => {
+              self.errhandler(err);
+            }
+          )
+      },
+      isSeller() {
+        return utils.isSeller()
+      },
+      errhandler: function (err) {
+        let self = this;
+        self.loading = false
+        self.scrollToTop()
+        if (err.message) {
+          self.showErr = true;
+          self.errMsg = err.message;
+        } else {
+          self.showErr = true;
+          self.errMsg = 'Something Went wrong. Please try after sometime.';
+        }
+      },
+      clearErr() {
+        let self = this;
+        self.showErr = false;
+        self.errMsg = null;
+        self.sugMsg = null;
+        self.showSucc = false;
+        self.loading = false
+      },
+      scrollToTop() {
+        window.scrollTo(0, 0);
+      },
     },
-    created: function() {
-        this.getBolDetails()
+    created: function () {
+      this.getBolDetails()
     }
   }
 
@@ -540,4 +733,15 @@
   .linwh {
     color: white;
   }
+  .searchable-container{margin:20px 0 0 0}
+.searchable-container label.btn-default.active{background-color:#007ba7;color:#FFF}
+.searchable-container label.btn-default{border:1px solid #efefef;margin:5px; box-shadow:5px 8px 8px 0 #ccc;}
+/* .searchable-container label .bizcontent{width:100%;} */
+/* .searchable-container .btn-group{width:90%} */
+.searchable-container .btn span.fa{
+    opacity: 1;
+}
+.searchable-container .btn.active span.fa {
+    opacity: 1;
+}
 </style>

@@ -442,7 +442,7 @@
         </b-card>
       </b-col>
     </b-row>
-      <b-modal ref="myModalRef" id="modal-center" centered hide-footer title="Order Details">
+      <b-modal ref="myModalRef" id="modal-center" centered hide-footer title="LOC Details">
         <tree-view :data="blochainData" :options="viewerOptions"></tree-view>
       </b-modal>
       <b-row v-if="locChangeHistory.length">

@@ -205,6 +205,21 @@ export const deleteBol =(id) => {
     return axios.post(`${API_URL}${EndPoints.DELETE_BOL}${id}`, {},  headers)
 }
 
+export const sentBolToBuyer = (id) => {
+    const headers ={ "headers" : utils.authHeader() };
+    return axios.post(`${API_URL}${EndPoints.SEND_TO_BUYER}${id}`, {}, headers)
+}
+
+export const resentBolToBuyer = (id, data) => {
+    const headers = { "headers" : utils.authHeader() };
+    return axios.post(`${API_URL}${EndPoints.RESENT_TO_BUYER}${id}`, data, headers)
+}
+
+export const buyerActionToBol = (id, data) => {
+    const headers = { "headers": utils.authHeader()};
+    return axios.post(`${API_URL}${EndPoints.BOL_BUYER_ACTION}${id}`, data, headers)
+}
+
 export default {
     getUser,
     updateUser,
@@ -244,5 +259,8 @@ export default {
     getBolList,
     getBolDetails,
     updateBolDetails,
-    deleteBol
+    deleteBol,
+    sentBolToBuyer,
+    resentBolToBuyer,
+    buyerActionToBol
 }
