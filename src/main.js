@@ -16,9 +16,13 @@ import VueElementLoading from 'vue-element-loading'
 import TreeView from "vue-json-tree-view"
 import VueGoodTablePlugin from 'vue-good-table';
 import Toasted from 'vue-toasted';
+import Vuetify from 'vuetify'
  
+Vue.use(Vuetify)
 
- 
+import VueTreeNavigation from 'vue-tree-navigation';
+
+Vue.use(VueTreeNavigation);
 import 'vue-good-table/dist/vue-good-table.css'
 
  

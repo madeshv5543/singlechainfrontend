@@ -5,7 +5,23 @@
         Headings
       </div>
       <div class="card-body">
-      
+          <div class="row">
+       <div class="col-md-12">
+       
+  <div class="row">
+      <div class="col-md-10">
+        </div>
+          <div class="col-md-2">
+      <div>       <b-button type="submit" @click="tree" variant="primary"><i class="fa fa-tree"></i> Product Tree </b-button> </div>&emsp;&emsp;
+        </div>
+        </div>
+
+        </div>
+        </div>
+            <!-- <div class="br-left">
+           <div> <b-button type="submit" @click="tree" variant="primary"><i class="fa fa-tree"></i> Product Tree </b-button></div>
+              </div>
+         -->
      <vue-good-table
       :columns="columns"
       :rows="rows"
@@ -17,8 +33,8 @@
         <template slot="table-row" slot-scope="props">
                   <span v-if="props.column.field == 'action'">
                     <div>
-                   <a class="fa fa-pencil" @click="click(props.row._id)"></a> &emsp;&emsp;
-                    <a class="fa fa-times" @click="cancel(props.row._id)"></a>
+                   <a class="fa fa-eye" @click="click(props.row._id)"></a> &emsp;&emsp;
+                    <!-- <a class="fa fa-eye" @click="cancel(props.row._id)"></a> -->
                     </div>
                     
                   </span>
@@ -56,13 +72,12 @@ return {
         
         },
         user: {
-            name:'',
-            unitprice:'',
-           
-            weight:'',
-          expiry:'',
-            description:'',
-            warranty:'',
+name:'',
+ unitprice:'',           
+ weight:'',
+ expiry:'',
+ description:'',
+ warranty:'',
 quality:'',
 manufacturer:'',
 type:'',
@@ -85,6 +100,7 @@ urlimage:'',
                     { label: 'TYPE', field: 'type'},
                     { label: 'QUANTITY', field: 'quantity'},
                     { label: 'CERTIFICATION', field: 'certification'},
+                
                     { label: 'PRICE', field: 'unitprice'},
                     { label: 'WEIGHT', field: 'weight'},  
                     { label: 'COMPANY', field: 'company'},   
@@ -117,7 +133,10 @@ urlimage:'',
     },
     
     methods: {
-        
+         tree(){
+    var app=this;
+ app.$router.push("/tree");
+  },
   click(params) {
 //let id = this.$route.params.id;
       let path1='/editlist/'+ params

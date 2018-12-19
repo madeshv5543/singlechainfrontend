@@ -58,10 +58,13 @@ const Register = () => import('@/views/pages/Register')
 // Users
 const Users = () => import('@/views/users/Users')
 const User = () => import('@/views/users/User')
+const tree = () => import('@/views/mypages/tree')
 
 const PurchasOrder = () => import('@/views/mypages/purchaseOrder')
 const ProductOrder = () => import('@/views/mypages/ProductOrder')
 const list = () => import('@/views/mypages/list')
+const product = () => import('@/views/mypages/product')
+
 
 
 
@@ -102,6 +105,11 @@ const router = new Router({
           component: ProductOrder
         },
         {
+          path: '/product',
+          name: 'product',
+          component: product
+        },
+        {
           path: '/list',
           name: 'list',
           component: list
@@ -118,6 +126,11 @@ const router = new Router({
           path: '/newOrder',
           name: 'NewOrder',
           component: newOrder
+        },
+        {
+          path: '/tree',
+          name: 'tree',
+          component: tree
         },
         {
           path: '/newLoc',

@@ -11,11 +11,11 @@ items:[
     //   text: 'NEW'
     // }
   },
-  {
-    name: 'Product',
-    url: '/productOrder',
-    icon: 'icon-speedometer',
-  },
+  // {
+  //   name: 'Product',
+  //   url: '/productOrder',
+  //   icon: 'icon-speedometer',
+  // },
   {
     name: 'Purchase Order',
     url: '/purchaseOrders',
@@ -31,11 +31,21 @@ items:[
     url: '/newLoc',
     icon: 'icon-speedometer'
   },
+  // {
+  //   name: 'Product list',
+  //   url: '/list',
+  //   icon: 'icon-speedometer',
+  // },
   {
-    name: 'list',
-    url: '/list',
+    name: 'product',
+    url: '/product',
     icon: 'icon-speedometer',
   },
+  // {
+  //   name: 'Product Tree',
+  //   url: '/tree',
+  //   icon: 'icon-speedometer',
+  // },
  
 ],
 seller:[
