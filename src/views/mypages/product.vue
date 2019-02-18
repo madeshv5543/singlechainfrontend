@@ -65,13 +65,10 @@ methods: {
     var app=this;
     app.$router.push("/productorder")
   },
-  tree(){
-    var app=this;
- app.$router.push("/tree");
-  },
+ 
 deletee(){
   var app=this;
-  app.$router.push("/list");
+  app.$router.push("/productlist");
 }
 }
 }

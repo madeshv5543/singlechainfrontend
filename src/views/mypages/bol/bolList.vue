@@ -3,17 +3,16 @@
 
     <b-row>
       <b-col lg="12">
-        <c-table :table-data="items" :fields="fields" @edit-Item="editOrder" @delete-Item="deleteOrder" @view-Item="viewOrder" caption="<i class='fa fa-align-justify'></i> Purchase Orders"></c-table>
+        <bol-table :table-data="items" :fields="fields" @edit-Item="editOrder" @delete-Item="deleteOrder" @view-Item="viewOrder" caption="<i class='fa fa-align-justify'></i> Purchase Orders"></bol-table>
       </b-col>
 
       
-    </b-row>
-    <!--/.row-->
+    </b-row><!--/.row-->
   <div>
     <b-modal ref="myModalRef" id="modal-center" centered  hide-footer title="Delete Order">
       <div class="d-block text-center">
         <h3>Are you sure ?</h3>
-        <p> Do you really want to delete this order? This process cannot be undone.</p>
+        <p> Do you really want to delete this loc? This process cannot be undone.</p>
       </div>
       <div style="text-align:center"> 
       <b-btn style="margin:3px" class="mt-3" variant="plain"  @click="hideModal">Canlcel</b-btn>
@@ -26,32 +25,30 @@
 
 
 <script>
-import { shuffleArray } from '@/shared/utils'
-import cTable from '../base/Table.vue'
+import bolTable from '../../base/bolTable.vue'
 import userService from '@/services/userService.js';
 
-
-
 export default {
-  name: 'tables',
-  components: {cTable},
+  name: 'loclist',
+  components: {bolTable},
   data: () => {
     return {
       items: [],
       itemdelete:null,
       fields: [
-        {key: 'orderId', label: 'Order', sortable: true},
+        {key: 'bolId', label: 'Bill Of Lading', sortable: true},
         {key: 'createdDate', label:'Created Date'},
-        {key: 'seller', label: 'Seller'},
+        {key: 'receiver', label: 'Receiver'},
+        {key: 'shipper', label: 'Shipper'},
         {key: 'status', sortable: true},
-        {key: 'orderAction'}
+        {key: 'Action'}
       ],
     }
   },
   methods: {
-    getOrderList() {
+    getBolList() {
       let self = this;
-      userService.getOrders()
+      userService.getBolList()
       .then(
         res => {
          if(res.status === 200) {
@@ -65,8 +62,8 @@ export default {
     },
     editOrder(item) {
      this.$router.push({
-       name:'EditOrder',
-       params:{id:item}
+       name:'EditBol',
+       params:{id : item}
      })
     },
     deleteOrder(item) {
@@ -75,19 +72,19 @@ export default {
     },
     viewOrder(item) {
       this.$router.push({
-       name:'ViewOrder',
+       name:'ViewBol',
        params:{id:item}
      })
     },
     deleteConfirm(){
       let self = this;
       self.hideModal()
-      userService.deleteOrder(self.itemdelete)
+      userService.deleteBol(self.itemdelete)
       .then(
         res=> {
           console.log("item delet ", res)
           self.itemdelete = null;
-          this.getOrderList();
+          this.getBolList();
         },
         err => {
           console.log("item delet  errror", res)
@@ -102,7 +99,7 @@ export default {
     }
   },
   created: function() {
-    this.getOrderList()
+    this.getBolList()
   }
 }
 </script>

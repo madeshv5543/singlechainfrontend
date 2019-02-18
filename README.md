@@ -121,7 +121,7 @@ CoreUI-Vue/
 │   ├── router/                 # routing 
 │   ├── shared/                 # utils
 │   ├── views/                  # ui views
-│   ├── _nav.js                 # sidebar nav config
+│   ├── _nav.1.js                 # sidebar nav config
 │   ├── App.vue                 # main app component
 │   └── main.js                 # app entry file
 ├── test/

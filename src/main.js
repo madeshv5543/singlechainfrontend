@@ -14,6 +14,7 @@ import Vuelidate from 'vuelidate'
 
 import VueElementLoading from 'vue-element-loading'
 import TreeView from "vue-json-tree-view"
+import Datepicker from 'vuejs-datepicker';
 import VueGoodTablePlugin from 'vue-good-table';
 import Toasted from 'vue-toasted';
 import Vuetify from 'vuetify'
@@ -41,6 +42,7 @@ Vue.use(VueGoodTablePlugin);
 Vue.use(Toasted)
 Vue.use(VeeValidate);
 Vue.component('VueElementLoading', VueElementLoading)
+Vue.component('Datepicker', Datepicker)
 Vue.use(TreeView)
 
 /* eslint-disable no-new */

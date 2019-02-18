@@ -36,6 +36,15 @@ export const isSeller = () => {
   }
 }
 
+export const isBanker = () => {
+  let user = JSON.parse(window.localStorage.getItem(config.USER_DATA))
+  if(user.accountType === config.BANKER) {
+    return true
+  }else{
+    return false
+  }
+}
+
 export function authHeader() {
     let user = getUSer()
     let token = getToken()
@@ -56,4 +65,4 @@ export function getChainName(url) {
   }
 } 
 
-export default { getToken, saveToken, destroyToken, authHeader, getUSer, isBuyer, isSeller, getChainName};
+export default { getToken, saveToken, destroyToken, authHeader, getUSer, isBuyer, isSeller, getChainName, isBanker};

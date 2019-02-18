@@ -180,14 +180,17 @@
             }
           }
         )
+
+
+        
       },    
       editItemTrigger(item) {
         this.items = this.items.filter(n => {
           return n.product != item.product && n.total != item.total
         })
         this.item.product = item.product;
-        this.item.unitprice = item.unitprice
-        this.item.quantity = item.quantity
+        this.item.unitprice = item.unitprice;
+        this.item.quantity = item.quantity;
       },
       addItem(item) {
         console.log("item", item)

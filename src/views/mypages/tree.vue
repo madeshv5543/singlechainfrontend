@@ -142,6 +142,8 @@
 
 import 'vuetify/dist/vuetify.min.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import userService from '@/services/userService.js';
+
 import axios from 'axios'
 const avatars = [
 
@@ -189,14 +191,11 @@ export default {
         },
          {
           name: 'Electronics',
-     children:[
-        
-        {
-            name:'Watch',
+   
             children:this.electronics
           }
-          ]
-         }
+          
+         
        
         
           ]}
@@ -248,8 +247,11 @@ export default {
     },
     async fetchUsers (item) {
       await pause(500)
-      return axios.get('http://localhost:3000/api/productlist')
-      .then(res => res.data.data)
+      console.log("getproductlist")
+      userService.getProdcutList()
+      
+      .then(res => res.data)
+    
         .then(json => {
           var length = Object.keys(json).length
           console.log('length',length)
@@ -267,7 +269,7 @@ export default {
               }
             }
               if(json[i].type === 'Electronics') {
-              if(item.name === 'Watch') {
+              if(item.name === 'Electronics') {
                 item.children.push(json[i])
               }
             }
@@ -286,7 +288,7 @@ export default {
     randomAvatar () {
       this.avatar = avatars[Math.floor(Math.random() * avatars.length)]
     }
-  }
+  },
 }
 </script>
 <style scoped>
@@ -298,4 +300,6 @@ export default {
     padding: 16px;
     width: 64% !important;
 }
-</style>s
+</style>
+
+  

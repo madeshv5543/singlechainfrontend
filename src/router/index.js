@@ -62,7 +62,8 @@ const tree = () => import('@/views/mypages/tree')
 
 const PurchasOrder = () => import('@/views/mypages/purchaseOrder')
 const ProductOrder = () => import('@/views/mypages/ProductOrder')
-const list = () => import('@/views/mypages/list')
+const viewedi = () => import('@/views/mypages/viewedi')
+const productlist = () => import('@/views/mypages/productlist')
 const product = () => import('@/views/mypages/product')
 
 
@@ -74,6 +75,23 @@ const editlist = () => import('@/views/mypages/editlist')
 const editOrder = () => import('@/views/mypages/editOrder')
 const viewOrder = () => import('@/views/mypages/orderview')
 const newLoc = () => import('@/views/mypages/createLoc')
+const poLanding  =  () => import('@/views/mypages/polanding')
+const locLanding = () => import('@/views/mypages/locLanding')
+const locList = () => import('@/views/mypages/loclist')
+const editLoc = () => import('@/views/mypages/editLoc')
+const viewLoc = () => import('@/views/mypages/viewLoc')
+const BolLanding  = () => import('@/views/mypages/bol/landingBol')
+const CreateBol = () => import('@/views/mypages/bol/createBol')
+const BolList = () => import('@/views/mypages/bol/bolList')
+const EditBol = () => import('@/views/mypages/bol/editBol')
+const Viewbol= () => import('@/views/mypages/bol/viewBol')
+const user = () => import('@/views/mypages/user')
+const admin = () => import('@/views/mypages/admin')
+
+const company = () => import('@/views/mypages/company')
+const colist= () => import('@/views/mypages/colist')
+const clist= () => import('@/views/mypages/clist')
+
 
 Vue.use(Router)
 
@@ -96,9 +114,18 @@ const router = new Router({
         {
           path: '/purchaseOrders',
           name: 'PurchaseOrder',
+          component: poLanding
+        },
+        {
+          path: '/purchaseOrderList',
+          name: 'PurchaseOrderList',
           component: PurchasOrder
         },
-        
+        {
+          path: '/viewedi',
+          name: 'viewedi',
+          component: viewedi
+        },
         {
           path: '/productOrder',
           name: 'ProductOrder',
@@ -106,21 +133,33 @@ const router = new Router({
         },
         {
           path: '/product',
-          name: 'product',
+          name: 'createproduct',
           component: product
         },
         {
-          path: '/list',
-          name: 'list',
-          component: list
+          path: '/productlist',
+          name: 'product',
+          component: productlist
         },
         {
           path: '/editlist/:id',
+          name: 'editlist',
           component: editlist
         },
         {
           path: '/deletelist/:id',
-          component: list
+          component: productlist
+        },
+        {
+          path: '/loc',
+          name: 'Loc',
+          component: locLanding
+
+        },
+        {
+          path: '/loclist',
+          name: 'LocList',
+          component: locList
         },
         {
           path: '/newOrder',
@@ -138,9 +177,19 @@ const router = new Router({
           component: newLoc
         },
         {
+          path: '/editLoc/:id',
+          name: 'EditLoc',
+          component: editLoc        
+        },
+        {
+          path: '/viewLoc/:id',
+          name: 'ViewLoc',
+          component: viewLoc
+        },
+        {
           path: '/myprofile',
           name: 'MyProfile',
-          component: profile
+          component:  profile
         },
         {
           path: '/editOrder/:id',
@@ -152,7 +201,72 @@ const router = new Router({
           name: 'ViewOrder',
           component: viewOrder
         },
-       
+        {
+          path: '/bol',
+          name: "BolLanding",
+          component: BolLanding
+        },
+        {
+          path: '/createBol',
+          name: 'CreateBol',
+          component: CreateBol
+        },
+        {
+          path: '/bolList',
+          name: 'BolList',
+          component: BolList
+        },
+        {
+          path: '/editBol/:id',
+          name: 'EditBol',
+          component: EditBol
+        },
+        {
+          path: '/viewBol/:id',
+          name: 'ViewBol',
+          component: Viewbol
+        },
+
+        {
+          path: 'mypages',
+          redirect: '/mypages/user',
+          name: 'user',
+          component: {
+            render (c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: 'user',
+              name: 'user',
+              component: user
+            },
+            {
+              path: 'admin',
+              name: 'admin',
+              component: admin
+            },
+            {
+              path: 'productlist',
+              name: 'productlist',
+              component: productlist
+            },
+            {
+              path: 'company',
+              name: 'company',
+              component: company
+            },
+            {
+              path: 'colist',
+              name: 'colist',
+              component: colist
+            },
+            {
+              path: 'clist',
+              name: 'clist',
+              component: clist
+            },
+              ]
+        },
         {
           path: 'theme',
           redirect: '/theme/colors',

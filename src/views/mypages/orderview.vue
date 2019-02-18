@@ -37,7 +37,7 @@
                       </div>
                     </div>
                   </li>
-                  <li class="timeline-item">
+                  <!-- <li class="timeline-item">
                     <div class="timeline-badge info"><i class="glyphicon glyphicon-check"></i></div>
                     <div class="timeline-panel">
                       <div class="timeline-heading">
@@ -64,7 +64,7 @@
                         <span> <a> Hyberledger</a></span>
                       </div>
                     </div>
-                  </li>
+                  </li> -->
                   <li class="timeline-item">
                     <div class="timeline-badge success"><i class="glyphicon glyphicon-check"></i></div>
                     <div class="timeline-panel">
@@ -153,13 +153,13 @@
             <b-col md="6">
               <b-form-group>
                 <label for="firstname">Organization</label>
-                <b-form-input type="text" id="firstname" name="firstname" disabled v-model="buyerDetails.orgName"></b-form-input>
+                <b-form-input type="text" id="firstname" name="firstname" disabled v-model="sellerDetails.orgName"></b-form-input>
               </b-form-group>
             </b-col>
             <b-col md="6">
               <b-form-group>
                 <label for="phonenumber">Phone Number</label>
-                <b-form-input type="text" id="phonenumber" disabled v-model="buyerDetails.phoneNumber"></b-form-input>
+                <b-form-input type="text" id="phonenumber" disabled v-model="sellerDetails.phoneNumber"></b-form-input>
               </b-form-group>
             </b-col>
           </b-row>
@@ -167,13 +167,13 @@
             <b-col md="6">
               <b-form-group>
                 <label for="address">Address</label>
-                <b-form-input type="text" id="address" name="address" disabled v-model="buyerDetails.address"></b-form-input>
+                <b-form-input type="text" id="address" name="address" disabled v-model="sellerDetails.address"></b-form-input>
               </b-form-group>
             </b-col>
             <b-col md="6">
               <b-form-group>
                 <label for="city">City</label>
-                <b-form-input type="text" id="city" name="city" disabled v-model="buyerDetails.city"></b-form-input>
+                <b-form-input type="text" id="city" name="city" disabled v-model="sellerDetails.city"></b-form-input>
               </b-form-group>
             </b-col>
           </b-row>
@@ -181,7 +181,7 @@
             <b-col md="6">
               <b-form-group>
                 <label for="pincode">Postal code</label>
-                <b-form-input type="text" id="pincode" name="pincode" disabled v-model="buyerDetails.pincode"></b-form-input>
+                <b-form-input type="text" id="pincode" name="pincode" disabled v-model="sellerDetails.pincode"></b-form-input>
               </b-form-group>
             </b-col>
             <b-col md="6">
@@ -229,11 +229,17 @@
                 <b-form-input type="text" id="phonenumber" disabled v-model="order.totalCost"></b-form-input>
               </b-form-group>
             </b-col>
+            
           </b-row>
 
-          <b-col lg="12">
-            <c-table :table-data="items" :fields="fields" caption="<i class='fa fa-align-justify'></i> Purchase Orders"></c-table>
-          </b-col>
+          <b-row>
+            <b-col md="6">
+              <c-table :table-data="items" :fields="fields" caption="<i class='fa fa-align-justify'></i> Purchase Orders"></c-table>
+            </b-col>
+            <!-- <b-col  md="6" v-if="orderHistory.length">
+              <c-table :table-data="orderHistory" :fields="hfields" caption="<i class='fa fa-align-justify'></i>  Order Histroy"></c-table>
+            </b-col> -->
+          </b-row>
           <b-row v-if="!isBuyer() && order.status !== 'Completed' && order.status !== 'Return' ">
             <b-col md="12">
             <b-form-group label="Remarks" label-for="remark" :label-cols="5" :horizontal="true">
@@ -248,11 +254,19 @@
             </b-form-group> 
             </b-col>
           </b-row>
-
-          <div v-if="isBuyer() && order.status === 'Pending'" slot="footer" style="text-align:center">
+        <span  slot="footer" style="text-align:center">
+            <b-button type="button" @click="jason" size="md" variant="primary"><i class="fa fa-eye"></i>
+           JSON   </b-button>&emsp;&emsp;
+          </span>
+          <span slot="footer" style="text-align:center">
+            <b-button type="button" @click="edidetails()" size="md" variant="primary"><i class="fa fa-eye"></i>
+             EDI</b-button>&emsp;&emsp;
+          </span>
+        
+          <span v-if="isBuyer() && order.status === 'Pending'" slot="footer" style="text-align:center">
             <b-button type="button" @click="sentToSeller()" size="md" variant="primary"><i class="fa fa-dot-circle-o"></i>
               Send To Seller</b-button>
-          </div>
+          </span>
           <div v-if="isBuyer() && order.status === 'Return'" slot="footer" style="text-align:center">
             <b-button type="button" @click="resentToSeller()" size="md" variant="primary"><i class="fa fa-dot-circle-o"></i>
               Send To Seller</b-button>
@@ -263,27 +277,42 @@
                  <b-button type="button" @click="sellerConfirm('Reject')" size="md" variant="primary"><i class="fa fa-dot-circle-o"></i>
               Return</b-button>
           </div>
-          <b-row>
+          <!-- <b-row>
             <div>
              <b-button type="button" size="md" variant="primary" @click="getChanges(order.orderId)" ><i class="fa fa-dot-circle-o"></i>
-              View History</b-button>
+              View </b-button>
             </div>
-          </b-row>
+          </b-row> -->
         </b-card>
       </b-col>
     </b-row>
     <div>
-      <b-modal ref="myModalRef" id="modal-center" centered hide-footer title="Order Details">
+      <!-- <b-modal ref="myModalRef" id="modal-center" centered hide-footer title="Order Details">
         <tree-view :data="blochainData" :options="viewerOprions"></tree-view>
       </b-modal>
       <b-modal ref="historyModalRef" id="modal-center" centered hide-footer title="Order History">
         <div v-for="item in orderHistory" :key="item.time">
-          <p> message : {{item.message}}</p>
+          <p> {{item.message}}</p>
           <p> Time : {{item.time }} </p>
           <p> Owner : {{item.owner}}</p>
         </div>
-      </b-modal>
+      </b-modal> -->
     </div>
+     <div>
+    <b-modal ref="myModalRef1" id="modal-center" centered  hide-footer title="EDI formats">
+      <div class="d-block text-center">
+         <div   >
+           
+          <div type="text" id="temp"    >Hashresult</div>
+          
+   
+         
+        </div>
+      
+      </div>
+     
+    </b-modal>
+  </div>
   </div>
 </template>
 
@@ -309,11 +338,22 @@
         timeline: {},
         order: {},
         items: [],
+      
+        UnitPrice:'',
+        hfields:[
+          {key: 'time', label:'Created Date'},
+          {key: 'owner', label: 'Owner'},
+          {key: 'message', label: 'Changes', sortable: true},
+        ],
         orderHistory:[],
         blochainData: {},
         loading: false,
         showerr: false,
         errmsg: null,
+         item: {}, // Must be an array reference!
+        show: true,
+        items: [],
+        itemsArray: [],
         succesmsg: false,
         succmsg: '',
         fields: [{
@@ -355,17 +395,93 @@
       }
     },
     methods: {
+      json(){
+
+        
+
+      },
+
+
+      edidetails() {
+        let self = this;
+        self.ediId = this.$route.params.id;
+        self.showerr = false;
+        self.errmsg = "";
+        userService.getEdiDetails(self.ediId)
+          .then(
+            res => {
+              if (res.status != 200) {
+                self.showerr = true;
+                self.errmsg = res.message;
+              } else {
+            //      var resultStr;
+            // var seperator = '*';
+            // var newLine = "\n";
+            // // seller=Order.orderId;
+            // // var items =" ";
+            // // var i;
+            // // for ( i=0;i<items.length;i++){
+            // //     item += items[i]
+            // // }
+        
+            // resultStr =  "ISA" + seperator + order.seller.email + seperator + newLine + "NI" + seperator + "SO" + order.seller.username + seperator + newLine + "N3" + seperator + order.totalCost +seperator  + newLine + "N3" + seperator +  order.orderId +seperator  + newLine + order.createdDate +seperator + newLine+  "N3" + seperator + order.items[0].product +seperator  + newLine  + newLine+  "N3" + seperator + order.items[0].quantity +seperator  + newLine  + newLine+  "N3" + seperator + order.items[0].total +seperator  + newLine   + newLine+  "N3" + seperator + order.items[0].unitprice +seperator  + newLine ;
+            //   // resultStr =  "ISA" + seperator + order.seller.username + seperator + newLine;
+            // console.log( 'hlo', 
+            // resultStr)
+                self.sellerDetails = res.data.seller
+                self.order = res.data
+                console.log(self.order.seller.username)
+                   console.log(self.order.seller.email)
+                      // console.log(self.order.seller.username)
+var edi=self.order.seller.username   +  self.order.seller.email;
+console.log('dgsg'  ,edi);
+                self.items = res.data.items
+              console.log (self.items[0].product)
+                 console.log(self.items[0].quantity)
+                  console.log(self.items[0].total)
+                   console.log(self.items[0].unitprice)
+                self.buyerDetails = res.data.buyer
+                console.log(self.buyerDetails.email)
+                                console.log(self.buyerDetails.username)
+
+                self.timeline = res.data.timeline
+                // self.getChanges(self.edi.ediId);
+                  // res.json({})
+            
+
+              }
+            
+            },
+            err => {
+              this.errhandler(err)
+            }
+      
+      
+      )
+
+       this.showModal()  
+      },
+
+//       edi(user){
+// let self =this;
+//    self.getediDetails()
+        
+//   // this.itemdelete = user;
+//      this.showModal()  
+//     //  self.items = res.data.items
+  
+//       },
       scrollToTop() {
         window.scrollTo(0, 0);
       },
       showHisModal() {
-        this.$refs.historyModalRef.show()
+        this.$refs.historyModalRef1.show()
       },
       hideHisModal() {
         this.$refs.historyModalRef.hide()
       },
       showModal() {
-        this.$refs.myModalRef.show()
+        this.$refs.myModalRef1.show()
       },
       hideModal() {
         this.$refs.myModalRef.hide()
@@ -432,9 +548,14 @@
                 self.showerr = true;
                 self.errmsg = res.message;
               } else {
-                self.succesmsg = true;
-                self.orderHistory = res.data;
-                self.showHisModal()
+                self.orderHistory = res.data.map( n => {
+                    let obj = {
+                      time: n.time,
+                      owner: self.getUsername(n.owner),
+                      message: n.message
+                    }
+                    return obj;
+                  });
               }
             }, err => {
               self.scrollToTop()
@@ -442,6 +563,14 @@
               self.errhandler(err)
             }
         )
+      },
+      getUsername(address){
+        let self = this;
+        if(self.order.buyer.walletAddress === address){
+          return 'Buyer'
+        }else {
+          return 'Seller'
+        }
       },
       getBlockchainOrder() {
         let self = this;
@@ -459,7 +588,7 @@
               } else {
                 self.succesmsg = true;
                 self.blochainData = res.data;
-                self.showModal()
+                // self.showModal()
               }
             }, err => {
               self.scrollToTop()
@@ -489,7 +618,7 @@
               } else {
                 self.succesmsg = true;
                 self.blochainData = JSON.parse(res.data);
-                self.showModal()
+                // self.showModal()
               }
             }, err => {
               self.scrollToTop()
@@ -537,6 +666,31 @@
           self.errmsg = 'Something Went wrong. Please try after sometime.';
         }
       },
+        getEdiDetails() {
+        let self = this;
+        self.ediId = this.$route.params.id;
+        self.showerr = false;
+        self.errmsg = "";
+        userService.getEdiDetails(self.ediId)
+          .then(
+            res => {
+              if (res.status != 200) {
+                self.showerr = true;
+                self.errmsg = res.message;
+              } else {
+                self.sellerDetails = res.data.seller
+                self.order = res.data
+                self.items = res.data.items
+                self.buyerDetails = res.data.buyer
+                self.timeline = res.data.timeline
+                self.getChanges(self.order.orderId);
+              }
+            },
+            err => {
+              this.errhandler(err)
+            }
+          )
+      },
       getOrderDetails() {
         let self = this;
         self.orderId = this.$route.params.id;
@@ -554,6 +708,7 @@
                 self.items = res.data.items
                 self.buyerDetails = res.data.buyer
                 self.timeline = res.data.timeline
+                self.getChanges(self.order.orderId);
               }
             },
             err => {
@@ -579,11 +734,12 @@
     },
     created: function () {
       this.getOrderDetails()
+      this.getEdiDetails()
     }
   }
 
 </script>
-<style scoped>
+<style >
   .chainlogo {
     float: right;
     width: 100px;

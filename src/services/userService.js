@@ -85,6 +85,145 @@ export const resentToseller = (orderId, data) => {
         return axios.post(`${API_URL}${EndPoints.RESENT_ORDER}${orderId}`, data, header).then(res => res.data)
 }
 
+export const placeLoc = (data) => {
+    const header = { "headers" : utils.authHeader()};
+    header['headers']["Content-Type"] = "multipart/form-data";
+    return axios.post(`${API_URL}${EndPoints.NEW_LOC}`, data, header).then(res => res.data)
+}
+
+export const getLocList = () => {
+    const header = { "headers" : utils.authHeader()};
+    return axios.get(`${API_URL}${EndPoints.LOC_LIST}`, header).then( res =>  res.data)
+}
+
+export const getLocDetails = (id) => {
+    const header = { "headers" : utils.authHeader()};
+    return axios.get(`${API_URL}${EndPoints.LOC_DETAILS}${id}`, header).then( res =>  res.data);
+}
+
+export const updateLoc = (id, data) => {
+    const header = { "headers" : utils.authHeader()};
+    return axios.post(`${API_URL}${EndPoints.LOC_UPDATE}${id}`, data, header).then(res => res.data);
+}
+
+export const sentBuyerBank = (id) => {
+    const header = {"headers": utils.authHeader()};
+    console.log("here")
+    return axios.post(`${API_URL}${EndPoints.SENT_BUYERBANK}${id}`, {}, header).then(res => res.data);
+}
+
+export const transferToSellerBank = (id, data) => {
+    const header = { "headers" : utils.authHeader()};
+    return axios.post(`${API_URL}${EndPoints.SENT_SELLERBANK}${id}`, data, header).then(res => res.data);
+}
+
+export const sentToBuyer =( id, data) => {
+    const header = { "headers" : utils.authHeader()};
+    return axios.post(`${API_URL}${EndPoints.SENT_BUYER}${id}`, data, header).then( res => res.data);
+}
+
+export const resentToBank = (id, data) => {
+    const header = { "headers" : utils.authHeader()};
+    return axios.post(`${API_URL}${EndPoints.RESENT_BANK}${id}`, data, header).then( res => res.data);
+}
+
+export const transferToSeller = (id, data) => {
+    const header = { "headers" : utils.authHeader()};
+    return axios.post(`${API_URL}${EndPoints.SENTLC_TO_SELLER}${id}`, data, header).then( res => res.data);
+}
+
+export const returnToBuyerBank = (id, data) => {
+    const header = { "headers" : utils.authHeader()};
+    return axios.post(`${API_URL}${EndPoints.RETURN_TO_BUYERBANK}${id}`, data, header).then( res => res.data);
+}
+
+export const sellerConfirm = (id, data) => {
+    const header = { "headers" : utils.authHeader()};
+    return axios.post(`${API_URL}${EndPoints.SELLER_CONFIRM}${id}`, data, header).then( res => res.data);
+}
+
+export const sellerReturn = (id, data) => {
+    const header = { "headers" : utils.authHeader()};
+    return axios.post(`${API_URL}${EndPoints.SELLER_RETURN}${id}`, data, header).then( res => res.data);
+}
+
+export const reSentToSellerBank = (id, data) => {
+    const header = { "headers" : utils.authHeader()};
+    return axios.post(`${API_URL}${EndPoints.RESENT_TO_SELLERBANK}${id}`, data, header).then( res => res.data)
+}
+
+export const addProduct = (data) => {
+      const headers = { "headers" : utils.authHeader()};
+      headers['headers']["Content-Type"] = "multipart/form-data";
+      return axios.post(`${API_URL}${EndPoints.ADD_PRODUCT}`, data, headers).then( res => res.data)
+}
+
+export const getProdcutList =() => {
+    const header = { "headers" : utils.authHeader()};
+    return axios.get(`${API_URL}${EndPoints.PRODUCT_LIST}`,header).then(res => res.data)
+}
+
+export const updateProduct = (id, data) => {
+    const headers = { "headers" : utils.authHeader()};
+    headers['headers']["Content-Type"] = "multipart/form-data";
+    return axios.post(`${API_URL}${EndPoints.UPDATE_PRODUCT}${id}`, data, headers)
+}
+
+export const getProduct = (id) => {
+    const headers = { "headers" : utils.authHeader()};
+    return axios.get(`${API_URL}${EndPoints.GET_PRODUCT}${id}`, headers).then(res => res.data)
+}
+
+export const deleteProduct = (id) => {
+    const headers = { "headers" : utils.authHeader()};
+    return axios.post(`${API_URL}${EndPoints.DELETE_PRODUCT}${id}`, {}, headers).then(res=> res.data)
+}
+
+export const updateUsser = (id) => {
+    const headers = { "headers" : utils.authHeader()};
+    return axios.post(`${API_URL}${EndPoints.UPDATE_USER}${id}`, {}, headers).then(res=> res.data)
+}
+
+export const createBol = (data) => {
+    const headers = { "headers" : utils.authHeader() };
+    return axios.post(`${API_URL}${EndPoints.CREATE_BOL}`, data, headers).then(res => res.data)
+}
+
+export const getBolList = () => {
+    const headers = { "headers" : utils.authHeader() };
+    return axios.get(`${API_URL}${EndPoints.BOL_LIST}`, headers).then(res => res.data);
+}
+
+export const getBolDetails = (id) => {
+    const headers = {  "headers" : utils.authHeader() };
+    return axios.get(`${API_URL}${EndPoints.BOL_DETAILS}${id}`, headers ).then(res => res.data)
+}
+
+export const updateBolDetails = (id, data) => {
+    const headers = { "headers" : utils.authHeader() };
+    return axios.post(`${API_URL}${EndPoints.BOL_EDit}${id}`, data, headers).then(res => res.data);
+} 
+
+export const deleteBol =(id) => {
+    const headers = { "headers" : utils.authHeader()};
+    return axios.post(`${API_URL}${EndPoints.DELETE_BOL}${id}`, {},  headers)
+}
+
+export const sentBolToBuyer = (id) => {
+    const headers ={ "headers" : utils.authHeader() };
+    return axios.post(`${API_URL}${EndPoints.SEND_TO_BUYER}${id}`, {}, headers)
+}
+
+export const resentBolToBuyer = (id, data) => {
+    const headers = { "headers" : utils.authHeader() };
+    return axios.post(`${API_URL}${EndPoints.RESENT_TO_BUYER}${id}`, data, headers)
+}
+
+export const buyerActionToBol = (id, data) => {
+    const headers = { "headers": utils.authHeader()};
+    return axios.post(`${API_URL}${EndPoints.BOL_BUYER_ACTION}${id}`, data, headers)
+}
+
 export default {
     getUser,
     updateUser,
@@ -101,5 +240,32 @@ export default {
     getBankerlist,
     getBlockchainOrder,
     getOrderHistory,
-    resentToseller
+    resentToseller,
+    placeLoc,
+    getLocList,
+    getLocDetails,
+    updateLoc,
+    sentBuyerBank,
+    transferToSellerBank,
+    sentToBuyer,
+    resentToBank,
+    transferToSeller,
+    returnToBuyerBank,
+    sellerConfirm,
+    sellerReturn,
+    reSentToSellerBank,
+    addProduct,
+    getProdcutList,
+    updateProduct,
+    getProduct,
+    deleteProduct,
+    updateUsser,
+    createBol,
+    getBolList,
+    getBolDetails,
+    updateBolDetails,
+    deleteBol,
+    sentBolToBuyer,
+    resentBolToBuyer,
+    buyerActionToBol
 }

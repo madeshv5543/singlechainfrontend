@@ -11,7 +11,7 @@
                 <div v-if="showerr">
                   <b-alert show variant="danger">{{errmsg}}</b-alert>
                 </div>
-                <b-input-group class="mb-3">
+                <!-- <b-input-group class="mb-3">
                   <b-input-group-prepend>
                     <b-input-group-text><i class="icon-user"></i></b-input-group-text>
                   </b-input-group-prepend>
@@ -20,7 +20,7 @@
                 <b-form-invalid-feedback>
                   {{errors.first('username')}}
                 </b-form-invalid-feedback>
-                </b-input-group>
+                </b-input-group> -->
 
                 <b-input-group class="mb-3">
                   <b-input-group-prepend>
@@ -59,7 +59,7 @@
                   <b-input-group-prepend>
                     <b-input-group-text><i class="icon-lock"></i></b-input-group-text>
                   </b-input-group-prepend>
-                  <b-form-select id="basicSelect" :state="!errors.has('accountType')" name="accountType" v-validate="'required'" :plain="true" v-model="newUser.accountType" :options="['Seller', 'Buyer', 'Banker']">
+                  <b-form-select id="basicSelect" :state="!errors.has('accountType')" name="accountType" v-validate="'required'" :plain="true" v-model="newUser.accountType" :options="['Company', 'Admin']">
                   </b-form-select>
                 <b-form-invalid-feedback>
                   {{errors.first('accountType')}}
@@ -100,15 +100,16 @@
 </template>
 
 <script>
+import axios from 'axios'
   import auth from '../../services/authservice.js'
   import utils from '@/services/utils.js';
   export default {
     name: 'Register',
     data() {
       return {
-        newUser: {
-          accountType: 'Seller'
-        },
+       newUser:{
+
+       },
         proceseStage: 1,
         seed:null,
         showerr: false,
@@ -116,36 +117,51 @@
       }
     },
     methods: {
-       register : async function () {
-        let self = this;
-        self.showerr = false;
-        self.errmsg = "";
-        let checkform = await self.$validator.validateAll()
-        if(!checkform) {
-          return ;
-        }
-        auth.RegisterUser(this.newUser)
-          .then(res => {
-              if (res.status != 200) {
-                self.showerr = true;
-                self.errmsg = res.message;
-              } else {
-                self.proceseStage = 2
-                self.data = res.data
-                self.seed = res.seed
-                utils.saveToken(res.token, JSON.stringify(res.data))
-              }
-            },
-            err => {
-              if (err.message) {
-                self.showerr = true;
-                self.errmsg = err.message;
-              } else {
-                self.showerr = true;
-                self.errmsg = 'Something Went wrong. Please try after sometime.';
-              }
-            })
-      },
+      //  register : async function () {
+      //   let self = this;
+      //   self.showerr = false;
+      //   self.errmsg = "";
+      //   let checkform = await self.$validator.validateAll()
+      //   if(!checkform) {
+      //     return ;
+      //   }
+      //   auth.RegisterUser(this.newUser)
+      //     .then(res => {
+           
+      //       },
+      //       err => {
+      //         if (err.message) {
+      //           self.showerr = true;
+      //           self.errmsg = err.message;
+      //         } else {
+      //           self.showerr = true;
+      //           self.errmsg = 'Something Went wrong. Please try after sometime.';
+      //         }
+      //       })
+      // },
+
+  register(){
+let self = this;
+ self.$validator.validateAll()
+ .then(res=>
+ {
+   if (res){
+     axios.post( 'http://localhost:3201/api/signUp',this.newUser)
+     .then(response  => {
+       console.log(response.data +'gyu')
+       this.proceseStage = 2
+       console.log(JSON.stringify(response))
+       this.seed = response.data.data.seed
+        self.data = response.data
+              
+                utils.saveToken(response.data.data.token, JSON.stringify(response.data))
+       
+      
+     })
+   }
+ }
+ )
+  },
       downloadFile() {
           let self = this;
           const filename = `${new Date().getTime()}seed.txt`
@@ -158,6 +174,8 @@
           document.body.removeChild(element);
       },
       signupsucces() {
+
+        console.log('dfv')
           this.$router.push({
               name: 'Dashboard'
           })

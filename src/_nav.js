@@ -11,42 +11,36 @@ items:[
     //   text: 'NEW'
     // }
   },
-  // {
-  //   name: 'Product',
-  //   url: '/productOrder',
-  //   icon: 'icon-speedometer',
-  // },
+  {
+    name: 'Product',
+    url: '/product',
+    icon: 'icon-speedometer',
+  },
   {
     name: 'Purchase Order',
     url: '/purchaseOrders',
     icon: 'icon-speedometer',
   },
   {
-    name: 'New Order',
-    url: '/newOrder',
-    icon: 'icon-speedometer',
-  },
-  {
-    name: 'New Loc',
-    url: '/newLoc',
+    name: 'Letter Of Credit',
+    url: '/loc',
     icon: 'icon-speedometer'
   },
   // {
-  //   name: 'Product list',
+  //   name: 'list',
   //   url: '/list',
   //   icon: 'icon-speedometer',
   // },
-  {
-    name: 'product',
-    url: '/product',
-    icon: 'icon-speedometer',
-  },
   // {
-  //   name: 'Product Tree',
+  //   name: 'tree',
   //   url: '/tree',
   //   icon: 'icon-speedometer',
   // },
- 
+ {
+   name: "Bill Of lading",
+   url: '/bol',
+   icon: 'icon-speedometer'
+ }
 ],
 seller:[
   {
@@ -63,6 +57,31 @@ seller:[
     url: '/purchaseOrders',
     icon: 'icon-speedometer',
   },
- 
+  {
+    name: 'Letter Of Credit',
+    url: '/loc',
+    icon: 'icon-speedometer'
+  },
+  {
+    name: "Bill Of lading",
+    url: '/bol',
+    icon: 'icon-speedometer'
+  }
+],
+banker:[
+  {
+    name: 'Dashboard',
+    url: '/dashboard',
+    icon: 'icon-speedometer',
+    // badge: {
+    //   variant: 'primary',
+    //   text: 'NEW'
+    // }
+  },
+  {
+    name: 'Letter Of Credit',
+    url: '/loc',
+    icon: 'icon-speedometer'
+  }
 ]
 }
