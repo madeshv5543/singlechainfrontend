@@ -87,6 +87,7 @@ const EditBol = () => import('@/views/mypages/bol/editBol')
 const Viewbol= () => import('@/views/mypages/bol/viewBol')
 const user = () => import('@/views/mypages/user')
 const admin = () => import('@/views/mypages/admin')
+const viewProduct = () =>  import('@/views/mypages/viewproduct')
 
 const company = () => import('@/views/mypages/company')
 const colist= () => import('@/views/mypages/colist')
@@ -145,6 +146,11 @@ const router = new Router({
           path: '/editlist/:id',
           name: 'editlist',
           component: editlist
+        },
+        {
+          path: '/viewproduct/:id',
+          name: 'viewProduct',
+          component: viewProduct
         },
         {
           path: '/deletelist/:id',

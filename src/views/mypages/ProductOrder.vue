@@ -142,7 +142,8 @@
             </b-form-group>
           </b-col>
         </b-row>
-        <b-button type="submit" variant="primary">Save </b-button>
+        <div class="btncen">  <b-button type="submit" size="lg" variant="primary">Save </b-button> </div>
+       
       </b-form>
     </b-card>
   </b-col>
@@ -226,6 +227,9 @@
 <style scoped>
   .error {
     color: red
+  }
+  .btncen{
+    text-align: center
   }
 
   .ifdre {

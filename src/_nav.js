@@ -16,16 +16,16 @@ items:[
     url: '/product',
     icon: 'icon-speedometer',
   },
-  {
-    name: 'Purchase Order',
-    url: '/purchaseOrders',
-    icon: 'icon-speedometer',
-  },
-  {
-    name: 'Letter Of Credit',
-    url: '/loc',
-    icon: 'icon-speedometer'
-  },
+  // {
+  //   name: 'Purchase Order',
+  //   url: '/purchaseOrders',
+  //   icon: 'icon-speedometer',
+  // },
+  // {
+  //   name: 'Letter Of Credit',
+  //   url: '/loc',
+  //   icon: 'icon-speedometer'
+  // },
   // {
   //   name: 'list',
   //   url: '/list',
@@ -36,11 +36,11 @@ items:[
   //   url: '/tree',
   //   icon: 'icon-speedometer',
   // },
- {
-   name: "Bill Of lading",
-   url: '/bol',
-   icon: 'icon-speedometer'
- }
+//  {
+//    name: "Bill Of lading",
+//    url: '/bol',
+//    icon: 'icon-speedometer'
+//  }
 ],
 seller:[
   {
@@ -53,20 +53,26 @@ seller:[
     // }
   },
   {
-    name: 'Purchase Order',
-    url: '/purchaseOrders',
+    name: 'Product',
+    url: '/product',
     icon: 'icon-speedometer',
   },
-  {
-    name: 'Letter Of Credit',
-    url: '/loc',
-    icon: 'icon-speedometer'
-  },
-  {
-    name: "Bill Of lading",
-    url: '/bol',
-    icon: 'icon-speedometer'
-  }
+  
+  // {
+  //   name: 'Purchase Order',
+  //   url: '/purchaseOrders',
+  //   icon: 'icon-speedometer',
+  // },
+  // {
+  //   name: 'Letter Of Credit',
+  //   url: '/loc',
+  //   icon: 'icon-speedometer'
+  // },
+  // {
+  //   name: "Bill Of lading",
+  //   url: '/bol',
+  //   icon: 'icon-speedometer'
+  // }
 ],
 banker:[
   {
@@ -78,10 +84,10 @@ banker:[
     //   text: 'NEW'
     // }
   },
-  {
-    name: 'Letter Of Credit',
-    url: '/loc',
-    icon: 'icon-speedometer'
-  }
+  // {
+  //   name: 'Letter Of Credit',
+  //   url: '/loc',
+  //   icon: 'icon-speedometer'
+  // }
 ]
 }

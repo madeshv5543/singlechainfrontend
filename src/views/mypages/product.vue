@@ -1,87 +1,112 @@
 <template>
   <div class="animated fadeIn">
-    <b-card>
-    <div class="row">
-       <div class="col-md-12">
-       
-  <div class="row">
-      <div class="col-md-6">
-
- create product
-         </div>
-
-        <div class="col-md-6">
-          <div><b-button type="submit" @click="create" variant="primary"><i class="fa fa-plus"></i> New product</b-button></div>&emsp;&emsp;
-
- <div><b-button type="submit" @click="deletee" variant="primary"><i class="fa fa-table"></i> List view</b-button></div>&emsp;&emsp;
- <!-- <div> <b-button type="submit" @click="tree" variant="primary"><i class="fa fa-tree"></i> Product Tree </b-button></div>&emsp;&emsp; -->
-</div>
-</div>
- </div>  </div>
- </b-card>
-    </div>
+    <b-row>
+      <b-col md="12">
+        <b-card>
+          <b-row>
+            <b-col md="6">
+              <img  class="lcimg" :src="onboardImg">
+            </b-col>
+            <b-col md="6" class="barc">
+              <div class="vc">
+                <div>
+                  <router-link to="/productorder"> <b-button type="button" size="md" variant="primary"> <i class="fa fa-list"> Add  New product</i></b-button></router-link>
+                </div>
+                <br>
+                <div>
+                <router-link to="/productlist"> <b-button type="button" size="md" variant="primary"> <i class="fa fa-plus"> Product List </i></b-button> </router-link> 
+                </div>
+              </div>
+            </b-col>
+          </b-row>
+        </b-card>
+      </b-col>
+    </b-row>
+  </div>
 
 </template>
 <script>
+  import 'vuetify/dist/vuetify.min.css'
+  import 'material-design-icons-iconfont/dist/material-design-icons.css'
+  import axios from 'axios'
+ import jwtService from '@/services/utils.js'
 
-import 'vuetify/dist/vuetify.min.css'
-import 'material-design-icons-iconfont/dist/material-design-icons.css'
-import axios from 'axios'
-
-
-export default {
-  data () {
-    return {
-    user: {
-name:'',
- unitprice:'',           
- weight:'',
- expiry:'',
- description:'',
- warranty:'',
-quality:'',
-manufacturer:'',
-type:'',
-certification:'',
-company:'',
-unitofquantity:'',
- image:'',
-urlimage:'',
- quantity:'',
- skucode:''
-
-
-
-
+  export default {
+    props:{
+      onboardImg: {
+      type: String,
+      default: require('@/assets/productlanding.jpg')
+    },
+    },
+    data() {
+      return {
+        user: {
+          name: '',
+          unitprice: '',
+          weight: '',
+          expiry: '',
+          description: '',
+          warranty: '',
+          quality: '',
+          manufacturer: '',
+          type: '',
+          certification: '',
+          company: '',
+          unitofquantity: '',
+          image: '',
+          urlimage: '',
+          quantity: '',
+          skucode: ''
         },
+        userDetails: null,
 
-    
+      }
+    },
+
+
+    methods: {
+      create() {
+        var app = this;
+        app.$router.push("/productorder")
+      },
+
+      getLoggedUser: function () {
+        let self = this
+        self.userDetails = jwtService.getUSer()
+        console.log("user details", self.userDetails)
+      },
+
+      deletee() {
+        var app = this;
+        app.$router.push("/productlist");
+      }
+    },
+    created: function initFunction() {
+      this.getLoggedUser()
+    },
+    computed: {
+      admin (){
+        return jwtService.admin;
+      },
+      hub () {
+        return jwtService.hub;
+      },
+      centre() {
+        return jwtService.centre
+      }
     }
-  },
-  
-
-methods: {
-  create(){
-    var app=this;
-    app.$router.push("/productorder")
-  },
- 
-deletee(){
-  var app=this;
-  app.$router.push("/productlist");
-}
-}
-}
-
+  }
 
 </script>
 <style scoped>
-.indigo {
-  background-color: cornflowerblue!important;
-  border-color: cornflowerblue!important;
-}
-.v-card__text {
+  .indigo {
+    background-color: cornflowerblue !important;
+    border-color: cornflowerblue !important;
+  }
+
+  .v-card__text {
     padding: 16px;
     width: 64% !important;
-}
+  }
+
 </style>

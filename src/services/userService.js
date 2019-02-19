@@ -224,6 +224,38 @@ export const buyerActionToBol = (id, data) => {
     return axios.post(`${API_URL}${EndPoints.BOL_BUYER_ACTION}${id}`, data, headers)
 }
 
+export const getHubList = () => {
+    const headers = { "headers": utils.authHeader()};
+    return axios.get(`${API_URL}${EndPoints.HUB_LIST}`, headers)
+}
+
+export const getCenters = () => {
+    const headers = { "headers": utils.authHeader()};
+    return axios.get(`${API_URL}${EndPoints.CENTER_LIST}`, headers)
+}
+
+export const getDeliveryPersons = () => {
+    const headers = { "headers": utils.authHeader()};
+    return axios.get(`${API_URL}${EndPoints.PERSONS_LIST}`, headers)
+}
+
+export const sentToDeliveryHub = (data, id) => {
+    const headers = { "headers": utils.authHeader()};
+    return axios.post(`${API_URL}${EndPoints.SENT_TO_DELIVERYHUB}${id}`, data, headers)
+}
+
+
+export const sentToDeliveryCenter = (data, id) => {
+    const headers = { "headers": utils.authHeader()};
+    return axios.post(`${API_URL}${EndPoints.SENT_TO_DELIVERYCENTER}${id}`, data, headers)
+}
+
+export const sentToDelivery = (data, id) => {
+    const headers = { "headers": utils.authHeader()};
+    return axios.post(`${API_URL}${EndPoints.SENT_TO_DELIVERY}${id}`, data, headers)
+}
+
+
 export default {
     getUser,
     updateUser,
@@ -267,5 +299,11 @@ export default {
     deleteBol,
     sentBolToBuyer,
     resentBolToBuyer,
-    buyerActionToBol
+    buyerActionToBol,
+    getHubList,
+    sentToDeliveryHub,
+    getCenters,
+    getDeliveryPersons,
+    sentToDeliveryCenter,
+    sentToDelivery
 }

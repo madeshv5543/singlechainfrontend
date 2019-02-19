@@ -50,7 +50,7 @@
                 <b-form-group>
                   <label for="address">Address</label>
                   <b-form-input type="text" v-validate="'required'" :state="!errors.has('address')" id="address" name="address"
-                    v-model="user.address"></b-form-input>
+                    v-model="user.physicalAddress"></b-form-input>
                   <b-form-invalid-feedback>
                     {{errors.first('address')}}
                   </b-form-invalid-feedback>

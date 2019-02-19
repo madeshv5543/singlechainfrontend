@@ -1,5 +1,10 @@
 import config from './config.js'
 
+export const admin = 'Admin';
+export const hub = 'DeliveryHub';
+export const centre = 'DeliveryCenter';
+export const delivery = 'DeliveryBoy';
+
 export const getToken = () => {
   return window.localStorage.getItem(config.ID_TOKEN_KEY);
 };
@@ -65,4 +70,18 @@ export function getChainName(url) {
   }
 } 
 
-export default { getToken, saveToken, destroyToken, authHeader, getUSer, isBuyer, isSeller, getChainName, isBanker};
+export default { 
+  getToken, 
+  saveToken, 
+  destroyToken, 
+  authHeader, 
+  getUSer, 
+  isBuyer, 
+  isSeller, 
+  getChainName, 
+  isBanker,
+  admin,
+  hub,
+  centre,
+  delivery
+};
