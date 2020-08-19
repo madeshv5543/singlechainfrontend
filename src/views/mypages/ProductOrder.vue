@@ -180,7 +180,9 @@
       previewImage: function (event) {
         this.fname = event.target.files[0]
         this.url = URL.createObjectURL(this.fname)
+        console.log(this.url,"thisyel")
         this.user.image = this.fname.name
+        console.log(this.fname.name,"thisfnameiamge")
       },
       onSubmit() {
         this.submitted = true;
@@ -203,6 +205,7 @@
             formData.append('expiry', this.user.expiry)
             formData.append('skucode', this.user.skucode)
             formData.append('urlimg', this.fname)
+            console.log(this.fname,"jhfd")
             userService.addProduct(formData)
               .then(res => {
                 this.$toasted.show(' product saved', {

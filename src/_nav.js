@@ -40,7 +40,13 @@ items:[
    name: "Bill Of lading",
    url: '/bol',
    icon: 'icon-speedometer'
- }
+ },
+
+ {
+  name: 'Purchase Order2',
+  url: '/purchaseOrders',
+  icon: 'icon-speedometer',
+},
 ],
 seller:[
   {

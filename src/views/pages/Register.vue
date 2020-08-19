@@ -22,6 +22,18 @@
                 </b-form-invalid-feedback>
                 </b-input-group> -->
 
+                
+                <b-input-group class="mb-3">
+                  <b-input-group-prepend>
+                    <b-input-group-text><i class="icon-user"></i></b-input-group-text>
+                  </b-input-group-prepend>
+                  <b-form-input type="text" name="username" :state="!errors.has('username')" v-validate="'required'" class="form-control" v-model="newUser.username" placeholder="Username"
+                     />
+                <b-form-invalid-feedback>
+                  {{errors.first('username')}}
+                </b-form-invalid-feedback>
+                </b-input-group>
+
                 <b-input-group class="mb-3">
                   <b-input-group-prepend>
                     <b-input-group-text>@</b-input-group-text>
@@ -57,9 +69,9 @@
 
                 <b-input-group class="mb-4">
                   <b-input-group-prepend>
-                    <b-input-group-text><i class="icon-lock"></i></b-input-group-text>
+                    <b-input-group-text><i class="icon-user"></i></b-input-group-text>
                   </b-input-group-prepend>
-                  <b-form-select id="basicSelect" :state="!errors.has('accountType')" name="accountType" v-validate="'required'" :plain="true" v-model="newUser.accountType" :options="['Company', 'Admin']">
+                  <b-form-select id="basicSelect" :state="!errors.has('accountType')" name="accountType" v-validate="'required'" :plain="true" v-model="newUser.accountType" :options="['DeliveryHub','DeliveryCenter','DeliveryBoy', 'Admin']">
                   </b-form-select>
                 <b-form-invalid-feedback>
                   {{errors.first('accountType')}}
@@ -108,7 +120,6 @@ import axios from 'axios'
     data() {
       return {
        newUser:{
-
        },
         proceseStage: 1,
         seed:null,
@@ -139,22 +150,21 @@ import axios from 'axios'
       //         }
       //       })
       // },
-
   register(){
 let self = this;
  self.$validator.validateAll()
  .then(res=>
  {
    if (res){
-     axios.post( 'http://localhost:3201/api/signUp',this.newUser)
+     axios.post( 'http://localhost:3000/api/signUp',this.newUser)
      .then(response  => {
        console.log(response.data +'gyu')
        this.proceseStage = 2
        console.log(JSON.stringify(response))
-       this.seed = response.data.data.seed
+       this.seed = response.data.seed
         self.data = response.data
               
-                utils.saveToken(response.data.data.token, JSON.stringify(response.data))
+        utils.saveToken(response.data.data.token, JSON.stringify(response.data))
        
       
      })
@@ -174,7 +184,6 @@ let self = this;
           document.body.removeChild(element);
       },
       signupsucces() {
-
         console.log('dfv')
           this.$router.push({
               name: 'Dashboard'
@@ -182,28 +191,22 @@ let self = this;
       }
     }
   }
-
 </script>
 <style scoped>
   .lgbtn {
     text-align: center
   }
-
   .sedtxt {
     text-align: center
   }
-
   .seedbox {
         height: 150px;
         background: #e8e4e4;
         box-shadow: 4px 3px #d0c8c8;
         padding: 50px;
     }
-
     .seedwords{
       font-weight: bold;
       font-size: 16px
     }
-
-
 </style>

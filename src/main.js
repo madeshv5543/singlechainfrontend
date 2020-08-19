@@ -11,7 +11,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import VeeValidate from 'vee-validate';
 import Vuelidate from 'vuelidate'
-
+import VueQrcode from "@xkeshi/vue-qrcode";
 import VueElementLoading from 'vue-element-loading'
 import TreeView from "vue-json-tree-view"
 import Datepicker from 'vuejs-datepicker';
@@ -41,6 +41,7 @@ Vue.use(VueAxios, axios)
 Vue.use(VueGoodTablePlugin);
 Vue.use(Toasted)
 Vue.use(VeeValidate);
+Vue.component(VueQrcode.name, VueQrcode);
 Vue.component('VueElementLoading', VueElementLoading)
 Vue.component('Datepicker', Datepicker)
 Vue.use(TreeView)

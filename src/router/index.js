@@ -61,6 +61,7 @@ const User = () => import('@/views/users/User')
 const tree = () => import('@/views/mypages/tree')
 
 const PurchasOrder = () => import('@/views/mypages/purchaseOrder')
+// const PurchasOrder2 = () => import('@/views/mypages/purchaseOrder2')
 const ProductOrder = () => import('@/views/mypages/ProductOrder')
 const viewedi = () => import('@/views/mypages/viewedi')
 const productlist = () => import('@/views/mypages/productlist')
@@ -74,6 +75,7 @@ const profile = () => import('@/views/mypages/profile')
 const editlist = () => import('@/views/mypages/editlist')
 const editOrder = () => import('@/views/mypages/editOrder')
 const viewOrder = () => import('@/views/mypages/orderview')
+const viewOrder2 = () => import('@/views/mypages/orderview2')
 const newLoc = () => import('@/views/mypages/createLoc')
 const poLanding  =  () => import('@/views/mypages/polanding')
 const locLanding = () => import('@/views/mypages/locLanding')
@@ -87,7 +89,7 @@ const EditBol = () => import('@/views/mypages/bol/editBol')
 const Viewbol= () => import('@/views/mypages/bol/viewBol')
 const user = () => import('@/views/mypages/user')
 const admin = () => import('@/views/mypages/admin')
-
+const purchaseorder2 = () => import('@/views/mypages/purchaseorder2')
 const company = () => import('@/views/mypages/company')
 const colist= () => import('@/views/mypages/colist')
 const clist= () => import('@/views/mypages/clist')
@@ -116,6 +118,11 @@ const router = new Router({
           name: 'PurchaseOrder',
           component: poLanding
         },
+        // {
+        //   path: '/purchaseOrders2',
+        //   name: 'PurchaseOrder2',
+        //   component: poLanding
+        // },
         {
           path: '/purchaseOrderList',
           name: 'PurchaseOrderList',
@@ -202,6 +209,11 @@ const router = new Router({
           component: viewOrder
         },
         {
+          path: '/viewOrder2/:id',
+          name: 'ViewOrder2',
+          component: viewOrder2
+        },
+        {
           path: '/bol',
           name: "BolLanding",
           component: BolLanding
@@ -244,6 +256,11 @@ const router = new Router({
               path: 'admin',
               name: 'admin',
               component: admin
+            },
+            {
+              path: 'order2',
+              name: 'order2',
+              component: purchaseorder2
             },
             {
               path: 'productlist',

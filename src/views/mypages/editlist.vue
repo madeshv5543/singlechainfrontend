@@ -68,15 +68,25 @@
 
         </b-row>
         <b-row >
-          <b-col sm="7" class="filetop" >
+          <b-col sm="5" class="filetop" >
             <b-form-group label="Description" :label-cols="3" :horizontal="true"  >
               <b-form-textarea v-validate="'required'" name="description" id="basicTextarea" :textarea="true" :rows="3"
                 :cols="25" placeholder="Content.." v-model="user.description"></b-form-textarea>
               <span class="error" v-if="errors.has('description')">{{errors.first('description')}}</span>
             </b-form-group>
           </b-col>
+          <b-col sm="3">
+<div class="qrcode">
+                          <qrcode :value="user._id" :options="{ size: 100 }" tag="img"></qrcode>
+                        </div>
+</b-col>
         </b-row>
-        <br><br><br><br><br><br>
+
+        <b-row>
+
+
+          </b-row>
+        <!-- <br><br><br><br><br><br> -->
         <b-row>
           <b-col sm="4">
             <b-form-group label="Type" :label-cols="5" :horizontal="true">
@@ -312,8 +322,6 @@ window.location.reload()
         this.user.certification = res.data.certification;
         this.user.quantity = res.data.quantity;
         this.user.quality = res.data.quality;
-
-
         this.user.unitofquantity = res.data.unitofquantity;
         this.user.skucode = res.data.skucode;
         this.user.weight = res.data.weight;
@@ -326,7 +334,7 @@ window.location.reload()
         this.user.unitprice = res.data.unitprice;
       });
       console.log("hdfged");
-      console.log(id);
+      console.log(id,"idvalue");
       //  this.item = data.body;
     },
   }
@@ -367,5 +375,12 @@ window.location.reload()
 
 margin-top:-112px;
 }
-
+  .qrcode {
+    /* float:right;
+    padding-right:23% */
+    position: relative;
+    /* float:right;  */
+    bottom: 162px;
+    padding-left:95px;
+}
 </style>
